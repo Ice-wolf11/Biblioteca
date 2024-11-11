@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prestamos', function (Blueprint $table) {
+        Schema::create('penalizaciones', function (Blueprint $table) {
             $table->id();
             $table->date('fecha_inicio');
-            $table->date('fecha_limite');
-            $table->enum('estado', ['activo', 'devuelto','atrasado'])->default('activo');
-            $table->foreignId('id_persona')->nullable()->constrained('personas')->onDelete('set null');
-            $table->foreignId('id_copia')->nullable()->constrained('copia_libros')->onDelete('set null');
+            $table->date('fecha_fin');
+            $table->decimal('monto', 3,2);
+            $table->enum('estado', ['activo', 'pagado','anulado'])->default('activo');
+            $table->foreignId('id_prestamo')->constrained('prestamos')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prestamos');
+        Schema::dropIfExists('penalizaciones');
     }
 };

@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('copia_libros', function (Blueprint $table) {
+        Schema::create('devoluciones', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo');
-            $table->enum('estado', ['disponible', 'prestado', 'extraviado','reservado'])->default('disponible');
-            $table->foreignId('id_libro')->constrained('libros')->onDelete('cascade');
+            $table->date('fecha');
+            $table->foreignId('id_prestamo')->constrained('prestamos')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('copia_libros');
+        Schema::dropIfExists('devoluciones');
     }
 };
