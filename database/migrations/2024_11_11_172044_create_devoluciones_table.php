@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('devoluciones', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha');
+            #$table->timestamp('fecha')->useCurrent();
+            $table->string('detalle');
             $table->foreignId('id_prestamo')->constrained('prestamos')->onDelete('cascade');
             $table->timestamps();
         });

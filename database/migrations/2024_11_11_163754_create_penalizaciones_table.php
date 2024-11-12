@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('penalizaciones', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha_inicio');
+            #$table->date('fecha_inicio');
             $table->date('fecha_fin');
             $table->decimal('monto', 3,2);
             $table->enum('estado', ['activo', 'pagado','anulado'])->default('activo');
