@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Libro extends Model
 {
+    //este es un comentario de prueba
     public function copia_libros(){
         return $this->hasMany(Copia_libro::class);
     }
