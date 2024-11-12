@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reserva extends Model
 {
-    //
+    public function persona(){
+        return $this->belongsTo(Persona::class);
+    }
+
+    
 }
