@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             #$table->date('fecha_inicio');
             $table->date('fecha_fin');
-            $table->decimal('monto', 3,2);
+            $table->decimal('monto', 3,2)->unsigned();
             $table->enum('estado', ['activo', 'pagado','anulado'])->default('activo');
             $table->foreignId('id_prestamo')->constrained('prestamos')->onDelete('cascade');
             $table->timestamps();
