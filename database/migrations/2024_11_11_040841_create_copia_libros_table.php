@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('copia_libros', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo');
+            $table->string('codigo')->unique();
             $table->enum('estado', ['disponible', 'prestado', 'extraviado','reservado'])->default('disponible');
             $table->foreignId('id_libro')->constrained('libros')->onDelete('cascade');
             $table->timestamps();
