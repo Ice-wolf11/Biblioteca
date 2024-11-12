@@ -45,4 +45,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    //metodo de relacion uno a uno
+    public function persona(){
+        return $this->hasOne(Persona::class);
+
+    }
 }
