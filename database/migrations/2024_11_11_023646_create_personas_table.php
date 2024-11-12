@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nombres');
             $table->string('apellidos');
-            $table->string('dni',8);
+            $table->string('dni',8)->unique();
             $table->string('direccion');
             $table->string('telefono',9);
             $table->foreignId('id_area')->nullable()->constrained('areas')->onDelete('set null');
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_user')->unique()->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
