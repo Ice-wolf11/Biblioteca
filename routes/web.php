@@ -8,6 +8,9 @@ Route::get('/', function () {
 Route::get('/', function () {
     return view('template');
 });
+Route::get('/panel', function () {
+    return view('panel.index');
+})->name('panel');
 Route::get('/login', function () {
     return view('auth.login');
 });

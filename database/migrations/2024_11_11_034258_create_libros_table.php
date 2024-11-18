@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('titulo');
             $table->date('fecha_publicacion');
+            $table->string("ruta_portada");
             $table->foreignId('id_autor')->constrained('autors')->onDelete('cascade');
             $table->timestamps();
         });
