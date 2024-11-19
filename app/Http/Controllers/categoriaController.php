@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+Use Exception;
+use App\Http\Requests\StoreCategoriaRequest;
+use App\Http\Requests\UpdateCategoriaRequest;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\DB;
 
 class categoriaController extends Controller
 {
@@ -11,7 +17,8 @@ class categoriaController extends Controller
      */
     public function index()
     {
-        return view('categoria.index');
+        $categoria = Categoria::all();
+        return view('categoria.index',['categorias'=>$categoria]);
     }
 
     /**
@@ -19,15 +26,25 @@ class categoriaController extends Controller
      */
     public function create()
     {
-        //
+        return view('categoria.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoriaRequest $request)
     {
-        //
+        try{
+            DB::beginTransaction();
+            $area = Categoria::create([
+                'nombre' => $request->validated()['nombre'],
+                'descripcion' => $request->validated()['descripcion']
+            ]);
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+        }
+        return redirect()->route('categorias.index')->with('success','Categoria creada correctamente');
     }
 
     /**
@@ -41,17 +58,21 @@ class categoriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Categoria $categoria)
     {
-        //
+        //dd($categoria);
+        return view('categoria.edit',['categoria'=> $categoria]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoriaRequest $request, Categoria $categoria)
     {
-        //
+        
+        Categoria::where('id',$categoria->id)->update($request->validated());
+        
+        return redirect()->route('categorias.index')->with('success','Registro editado correctamente');
     }
 
     /**
@@ -59,6 +80,8 @@ class categoriaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $categoria = Categoria::find($id);
+        Categoria::where('id',$categoria->id)->delete();
+        return redirect()->route('categorias.index')->with('success','Registro eliminado correctamente');
     }
 }

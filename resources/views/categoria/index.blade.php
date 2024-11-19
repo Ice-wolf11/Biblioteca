@@ -1,17 +1,19 @@
 @extends('template')
 @section('title', 'Categorias')
 @push('css')
-    
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+
 @endpush
 
 @section('content')
+@include('layouts.partials.alert')
     <h1 class="mt-4 text-center">Categorias</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="{{route('panel')}}">Inicio</a></li>
         <li class="breadcrumb-item" active>Categorias</li>
     </ol>
     <div class="mb-4">
-        <a href="#" class="btn btn-primary btn-icon-split">
+        <a href="{{route('categorias.create')}}" class="btn btn-primary btn-icon-split">
             <span class="icon text-white-50">
                 <i class="fas fa-solid fa-plus"></i>
             </span>
@@ -34,9 +36,45 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($categorias as $categoria)
                         <tr>
-                                            
+                            <td>{{$categoria->nombre}}</td>
+                            <td>{{$categoria->descripcion}}</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-block">
+                                    
+                                    <form action="{{route('categorias.edit',['categoria'=>$categoria])}}" class="d-inline">@csrf<button class="btn btn-success" type="submit">Editar</button></form>
+                                    
+                                    <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$categoria->id}}">Eliminar</button>
+                                       
+                                </div>    
+                            </td>               
                         </tr>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="confirmModal-{{$categoria->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Mensaje de confirmación</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                ¿Esta seguro de esta acción?
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <form action="{{route('categorias.destroy',['categoria'=>$categoria->id])}}" method="POST">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger">Confirmar</button>
+                                </form>
+                                
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -45,5 +83,6 @@
 @endsection
 
 @push('js')
-    
+
+
 @endpush

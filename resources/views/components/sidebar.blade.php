@@ -21,10 +21,8 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Interface
-    </div>
+
+    
 
     <!-- Nav Item - Pages Collapse Menu 
     <li class="nav-item">
@@ -61,8 +59,6 @@
         </div>
     </li>-->
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
 
     <!-- Heading 
     <div class="sidebar-heading">
@@ -90,6 +86,7 @@
             </div>
         </div>
     </li>-->
+    <div class="sidebar-heading">Admin. Libros</div>
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">
@@ -101,8 +98,15 @@
     <!-- Nav Item - Tables -->
     <li class="nav-item">
         <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-table"></i>
+            <i class="fas fa-regular fa-address-book"></i>
             <span>Autores</span></a>
+    </li>
+
+    <!-- Nav Item - Tables -->
+    <li class="nav-item">
+        <a class="nav-link" href="#">
+            <i class="fas fa-solid fa-book"></i>
+            <span>Libros</span></a>
     </li>
 
     <!-- Divider -->
