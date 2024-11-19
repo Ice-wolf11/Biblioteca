@@ -12,7 +12,7 @@ class Libro extends Model
     }
 
     public function autor(){
-        return $this->belongsTo(Autor::class);
+        return $this->belongsTo(Autore::class);
     }
 
     public function categoria_libros(){

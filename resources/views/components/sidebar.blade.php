@@ -97,14 +97,14 @@
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{route('autores.index')}}">
             <i class="fas fa-regular fa-address-book"></i>
             <span>Autores</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{route('libros.index')}}">
             <i class="fas fa-solid fa-book"></i>
             <span>Libros</span></a>
     </li>

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\autoreController;
 use App\Http\Controllers\categoriaController;
+use App\Http\Controllers\libroController;
 use Illuminate\Support\Facades\Route;
 /*
 Route::get('/', function () {
@@ -12,6 +14,11 @@ Route::get('/', function () {
 Route::resource('categorias',categoriaController::class);
 
 
+//rutas libros
+Route::resource('libros',libroController::class);
+
+//rutas autores
+Route::resource('autores',autoreController::class);
 
 Route::get('/', function () {
     return view('template');
