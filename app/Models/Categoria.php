@@ -8,7 +8,10 @@ class Categoria extends Model
 {
     //protected $table = 'categorias';
     public function categoria_libros(){
-        return $this->hasMany(Categoria_Libro::class);
+        return $this->hasMany(Categoria_libro::class);
     }
+    /*public function libros() { 
+        return $this->belongsToMany(Libro::class, 'categoria_libro', 'id_categoria', 'id_libro');
+    }*/
     protected $fillable=['nombre','descripcion'];
 }
