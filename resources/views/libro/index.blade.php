@@ -43,7 +43,7 @@
                             <td>
                                 <div class="d-grid gap-2 d-md-block">
                                     
-                                    <form action="{{route('libros.edit',['libro'=>$libro])}}" class="d-inline">@csrf<button class="btn btn-success" type="submit">Editar</button></form>
+                                    <form action="{{route('libros.edit',['libro'=>$libro])}}" class="d-inline">@csrf<button class="btn btn-success" type="submit">Administrar</button></form>
                                     
                                     <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$libro->id}}">Eliminar</button>
                                        

@@ -31,67 +31,37 @@ class libroController extends Controller
         return view('libro.create',['categorias'=>$categoria, 'autores'=>$autore]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    /*public function store(StoreLibroRequest $request)
+    public function store(StoreLibroRequest $request)
     {
-        //dd($request);
-        try{
+        try {
             DB::beginTransaction();
+
+            // Subir la imagen
             $archivo = Libro::handleUploadImage($request->file('portada'));
 
+            // Crear el libro
             $libro = Libro::create([
                 'titulo' => $request->validated()['titulo'],
                 'fecha_publicacion' => $request->validated()['fecha'],
                 'ruta_portada' => $archivo,
-                'id_autor'=>$request->validated()['autores'],
+                'id_autor' => $request->validated()['autores'][0],
             ]);
 
-            //$libro->categorias()->sync($request->validated()['categorias']);
-            $cat_libro = Categoria_libro::create([
-                'id_categoria' => $request->validated()['categorias'], 
-                //'id_libro' =>  
-            ]);
+            // Crear registros en categoria_libro
+            foreach ($request->validated()['categorias'] as $categoria_id) {
+                Categoria_libro::create([
+                    'id_libro' => $libro->id,
+                    'id_categoria' => $categoria_id,
+                ]);
+            }
+
             DB::commit();
-        }catch(Exception $e){
+            return redirect()->route('libros.index')->with('success', 'Libro agregado correctamente.');
+        } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-        return redirect()->route('libros.index')->with('success','Libro agregado Correctamente');
-        
-    }*/
-    public function store(StoreLibroRequest $request)
-{
-    try {
-        DB::beginTransaction();
-
-        // Subir la imagen
-        $archivo = Libro::handleUploadImage($request->file('portada'));
-
-        // Crear el libro
-        $libro = Libro::create([
-            'titulo' => $request->validated()['titulo'],
-            'fecha_publicacion' => $request->validated()['fecha'],
-            'ruta_portada' => $archivo,
-            'id_autor' => $request->validated()['autores'][0],
-        ]);
-
-        // Crear registros en categoria_libro
-        foreach ($request->validated()['categorias'] as $categoria_id) {
-            Categoria_libro::create([
-                'id_libro' => $libro->id,
-                'id_categoria' => $categoria_id,
-            ]);
-        }
-
-        DB::commit();
-        return redirect()->route('libros.index')->with('success', 'Libro agregado correctamente.');
-    } catch (Exception $e) {
-        DB::rollBack();
-        return redirect()->back()->withErrors(['error' => $e->getMessage()]);
     }
-}
 
     
     /**
@@ -105,9 +75,10 @@ class libroController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
+    public function edit(Libro $libro)
+    {   $categoria = Categoria::all();
+        $autore = Autore::all();
+        return view('libro.edit',['libro'=>$libro,'categorias'=>$categoria, 'autores'=>$autore]);
     }
 
     /**
@@ -123,6 +94,8 @@ class libroController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $libro = Libro::find($id);
+        Libro::where('id',$libro->id)->delete();
+        return redirect()->route('libros.index')->with('success', 'Registro eliminado correctamente');
     }
 }
