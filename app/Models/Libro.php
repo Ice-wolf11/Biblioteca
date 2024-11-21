@@ -10,7 +10,7 @@ class Libro extends Model
     protected $fillable=['titulo','fecha_publicacion','ruta_portada','id_autor'];
     //este es un comentario de prueba
     public function copia_libros(){
-        return $this->hasMany(Copia_libro::class);
+        return $this->hasMany(Copia_libro::class,'id_libro');
     }
 
     public function autor(){

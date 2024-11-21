@@ -12,6 +12,6 @@ class Copia_libro extends Model
     }
 
     public function libro(){
-        return $this->belongsTo(Libro::class);
+        return $this->belongsTo(Libro::class,'id_libro');
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreLibroRequest;
 use App\Models\Autore;
 use App\Models\Categoria;
 use App\Models\Categoria_libro;
+use App\Models\Copia_libro;
 use App\Models\Libro;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -75,10 +76,11 @@ class libroController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Libro $libro)
-    {   $categoria = Categoria::all();
+    public function edit(Libro $libro) {
+        $categoria = Categoria::all();
         $autore = Autore::all();
-        return view('libro.edit',['libro'=>$libro,'categorias'=>$categoria, 'autores'=>$autore]);
+        $copias = $libro->copia_libros; 
+        return view('libro.edit',['libro'=>$libro,'categorias'=>$categoria, 'autores'=>$autore, 'copias'=>$copias]); 
     }
 
     /**

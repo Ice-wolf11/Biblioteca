@@ -3,6 +3,7 @@
 use App\Http\Controllers\autoreController;
 use App\Http\Controllers\categoriaController;
 use App\Http\Controllers\libroController;
+use App\Http\Controllers\copia_libroController;
 use Illuminate\Support\Facades\Route;
 /*
 Route::get('/', function () {
@@ -16,6 +17,9 @@ Route::resource('categorias',categoriaController::class);
 
 //rutas libros
 Route::resource('libros',libroController::class);
+
+//rutas copia_Libros
+Route::resource('copia_libros',copia_libroController::class);
 
 //rutas autores
 Route::resource('autores',autoreController::class);
