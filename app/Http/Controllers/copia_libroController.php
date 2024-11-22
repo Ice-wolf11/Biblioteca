@@ -19,7 +19,9 @@ class copia_libroController extends Controller
      */
     public function create()
     {
-        //
+        
+
+       return view('libro.copias');
     }
 
     /**

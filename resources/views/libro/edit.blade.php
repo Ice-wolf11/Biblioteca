@@ -78,13 +78,15 @@
     </div>
     <div class="container w-50 border border-3 border-primary rounded p-4 mt-3">
             <div class="mb-4">
-                <a href="{{route('libros.create')}}" class="btn btn-primary btn-icon-split">
+                <a href="{{route('copia_libros.create')}}" class="btn btn-primary btn-icon-split">
                     <span class="icon text-white-50">
                         <i class="fas fa-solid fa-plus"></i>
                     </span>
                     <span class="text">Añadir copia</span>
                 </a>
-            </div>   
+            </div>  
+            
+            </button>  
             <div class="table-responsive">
                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                         <thead>
@@ -105,32 +107,33 @@
                             </div>
                         </td>
                        </tr>
-                       <!-- Modal -->
-                       <div class="modal fade" id="confirmModal-{{$copia->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                       
+                       <!-- Modal Eliminar copias-->
+                        <div class="modal fade" id="confirmModal-{{$copia->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Mensaje de confirmación</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Mensaje de confirmación</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Esta seguro de esta acción?
+                                    </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <form action="{{route('copia_libros.destroy',['copia_libro'=>$copia->id])}}" method="POST">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger">Confirmar</button>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="modal-body">
-                                ¿Esta seguro de esta acción?
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <form action="{{route('copia_libros.destroy',['copia_libro'=>$copia->id])}}" method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger">Confirmar</button>
-                                </form>
-                                
-                                </div>
-                            </div>
                             </div>
                         </div>
                        @endforeach
                     </tbody>  
                 </table>
+                
             </div>
     </div>
 @endsection

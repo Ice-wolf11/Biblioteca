@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Copia_libro extends Model
 {
+    protected $fillable = ['codigo', 'id_libro', 'estado'];
     
     public function prestamos(){
         return $this->hasMany(Prestamo::class);
