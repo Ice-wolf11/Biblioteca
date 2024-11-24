@@ -5,6 +5,8 @@
 @endpush
 
 @section('content')
+@include('partials.codigo')
+@include('partials.select')
     <h1 class="mt-4 text-center">Administrar Libro</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
@@ -36,11 +38,7 @@
                     <div class="mb-3"> 
                         <div class="col-md-8"> 
                             <label for="autores" class="form-label">Autor:</label> 
-                            <select data-size="4" title="Seleccione un autor" data-live-search="true" name="autores[]" id="autores" class="form-control selectpicker show-tick" disabled>
-                                @foreach ($autores as $item)
-                                    <option value="{{ $item->id }}" {{ $item->id == $libro->id_autor ? 'selected' : '' }}>{{ $item->Nombre }}</option>
-                                @endforeach
-                            </select>
+                            <p>{{ $libro->autor->Nombre }}</p>
                             
                             @error('autores') 
                                 <small class="text-danger">{{ '*' . $message }}</small> 
@@ -156,10 +154,16 @@
                         @csrf
                         <div class="mb-3">
                             <label for="codigo" class="form-label">Código:</label>
-                            <input type="text" name="codigo" id="codigo" class="form-control" value="{{ old('codigo') }}">
+                            <!-- Campo de código deshabilitado inicialmente -->
+                            <input type="text" name="codigo" id="codigo" class="form-control" readonly>
                             @error('codigo')
                                 <small class="text-danger">{{ '*' . $message }}</small>
                             @enderror
+                        </div>
+                        <div class="mb-3 form-check">
+                            <!-- Checkbox para habilitar el campo de código personalizado -->
+                            <input type="checkbox" class="form-check-input" id="customCode" name="customCode">
+                            <label class="form-check-label" for="customCode">Ingresar código personalizado</label>
                         </div>
                         <input type="hidden" name="libro_id" value="{{ $libro->id }}">
                         <div class="modal-footer">
@@ -171,13 +175,11 @@
             </div>
         </div>
     </div>
+    
 @endsection
 
 @push('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.selectpicker').selectpicker();
-    });
-</script>
+
+
 @endpush
