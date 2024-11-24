@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Exception;
 use App\Http\Requests\StoreLibroRequest;
+use App\Http\Requests\UpdateLibroRequest;
 use App\Models\Autore;
 use App\Models\Categoria;
 use App\Models\Categoria_libro;
@@ -86,9 +87,10 @@ class libroController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateLibroRequest $request, Libro $libro)
     {
-        //
+        Libro::where('id',$libro->id)->update($request->validated());
+        return redirect()->route('libros.index')->with('success','Cambios applicados correctamente');
     }
 
     /**

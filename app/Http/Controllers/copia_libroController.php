@@ -1,27 +1,18 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Copia_libro;
+use App\Models\Libro;
+
 class copia_libroController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Libro $libro)
     {
-        
-
-       return view('libro.copias');
+        // No se requiere implementación ya que el formulario se maneja en la vista principal con un modal
     }
 
     /**
@@ -29,7 +20,19 @@ class copia_libroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validar los datos del request
+        $validated = $request->validate([
+            'codigo' => 'required|string|max:255|unique:copia_libros,codigo',
+            'libro_id' => 'required|exists:libros,id',
+        ]);
+
+        // Crear una nueva copia del libro
+        Copia_libro::create([
+            'codigo' => $validated['codigo'],
+            'id_libro' => $validated['libro_id'],
+        ]);
+
+        return redirect()->route('libros.edit', ['libro' => $validated['libro_id']])->with('success', 'Copia agregada correctamente.');
     }
 
     /**
@@ -37,7 +40,7 @@ class copia_libroController extends Controller
      */
     public function show(string $id)
     {
-        
+        //
     }
 
     /**
@@ -61,11 +64,9 @@ class copia_libroController extends Controller
      */
     public function destroy(string $id)
     {
-        
         $copia = Copia_libro::find($id);
         $libro = $copia->id_libro;
-        Copia_libro::where('id',$copia->id)->delete();
+        Copia_libro::where('id', $copia->id)->delete();
         return redirect()->route('libros.edit', ['libro' => $libro])->with('success', 'Registro eliminado correctamente');
-
     }
 }

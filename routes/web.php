@@ -20,6 +20,7 @@ Route::resource('libros',libroController::class);
 
 //rutas copia_Libros
 Route::resource('copia_libros',copia_libroController::class);
+// routes/web.php
 
 //rutas autores
 Route::resource('autores',autoreController::class);
