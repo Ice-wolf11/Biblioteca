@@ -71,27 +71,47 @@ class libroController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $libro = Libro::with('categorias')->find($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Libro $libro) {
+        // Cargar las relaciones necesarias, incluyendo categoria_libros
+        $libro->load('categoria_libros');
+    
+        // Cargar las categorías y autores generales
         $categoria = Categoria::all();
         $autore = Autore::all();
-        $copias = $libro->copia_libros; 
-        return view('libro.edit',['libro'=>$libro,'categorias'=>$categoria, 'autores'=>$autore, 'copias'=>$copias]); 
+    
+        // Obtener las copias relacionadas con el libro
+        $copias = $libro->copia_libros;
+    
+        // Obtener las categorías a través de la relación con Categoria_libro
+        $categoriasAsociadas = $libro->categoria_libros->map(function($categoria_libro) {
+            return $categoria_libro->categoria; // Asumiendo que 'categoria_libro' tiene la relación correcta con 'Categoria'
+        });
+    
+        // Retornar la vista de edición con los datos
+        return view('libro.edit', [
+            'libro' => $libro,
+            'categorias' => $categoria,
+            'autores' => $autore,
+            'copias' => $copias,
+            'categoriasAsociadas' => $categoriasAsociadas
+        ]);
     }
+    
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateLibroRequest $request, Libro $libro)
     {
-        Libro::where('id',$libro->id)->update($request->validated());
-        return redirect()->route('libros.index')->with('success','Cambios applicados correctamente');
+        //
     }
+    
 
     /**
      * Remove the specified resource from storage.

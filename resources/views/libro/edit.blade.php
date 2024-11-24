@@ -20,33 +20,28 @@
                     @csrf
                     <div class="mb-3">
                         <label for="titulo" class="form-label">Título:</label>
-                        <input type="text" name="titulo" id="titulo" class="form-control" value="{{ old('titulo', $libro->titulo) }}">
+                        <input type="text" name="titulo" id="titulo" class="form-control" value="{{ old('titulo', $libro->titulo) }}" readonly>
                         @error('titulo')
                             <small class="text-danger">{{ '*' . $message }}</small>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="fecha" class="form-label">Fecha Publicación:</label>
-                        <input type="date" name="fecha_publicacion" id="fecha_publicacion" class="form-control" value="{{ old('fecha', $libro->fecha_publicacion) }}">
+                        <input type="date" name="fecha_publicacion" id="fecha_publicacion" class="form-control" value="{{ old('fecha_publicacion', $libro->fecha_publicacion) }}" readonly>
                         @error('fecha_publicacion')
                             <small class="text-danger">{{ '*' . $message }}</small>
                         @enderror
                     </div>
-                    <div class="mb-3">
-                        <label for="portada" class="form-label">Portada:</label>
-                        <input type="file" name="portada" id="portada" class="form-control">
-                        @error('portada')
-                            <small class="text-danger">{{ '*' . $message }}</small>
-                        @enderror
-                    </div>
-                    <div class=" mb-3"> 
+                    
+                    <div class="mb-3"> 
                         <div class="col-md-8"> 
                             <label for="autores" class="form-label">Autor:</label> 
-                            <select data-size="4" title="Seleccione un autor" data-live-search="true" name="autores[]" id="autores" class="form-control selectpicker show-tick"> 
-                                @foreach ($autores as $item) 
-                                    <option value="{{$item->id}}" {{ (in_array($item->id , old('autores',[]))) ? 'selected' : '' }}>{{$item->Nombre}}</option>
-                                @endforeach 
-                            </select> 
+                            <select data-size="4" title="Seleccione un autor" data-live-search="true" name="autores[]" id="autores" class="form-control selectpicker show-tick" disabled>
+                                @foreach ($autores as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $libro->id_autor ? 'selected' : '' }}>{{ $item->Nombre }}</option>
+                                @endforeach
+                            </select>
+                            
                             @error('autores') 
                                 <small class="text-danger">{{ '*' . $message }}</small> 
                             @enderror 
@@ -55,25 +50,27 @@
                     <div class="mb-3">
                         <div class="col-md-8">
                             <label for="categorias" class="form-label">Categorías:</label>
-                            <select data-size="4" title="Seleccione las categorías" data-live-search="true" name="categorias[]" id="categorias" class="form-control selectpicker show-tick" multiple>
-                                @foreach ($categorias as $item)
-                                    <option value="{{$item->id}}" {{ (in_array($item->id , old('categorias',[]))) ? 'selected' : '' }}>{{$item->nombre}}</option>
+                            <ul>
+                                @foreach ($categoriasAsociadas as $categoria)
+                                    <li>{{ $categoria->nombre }}</li>
                                 @endforeach
-                            </select>
+                            </ul>
+                            
                             @error('categorias')
                                 <small class="text-danger">{{ '*' . $message }}</small>
                             @enderror
                         </div>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a type="submit" class="btn btn-primary" href="{{route('libros.index')}}">Volver</a>
                     </div>
                 </form>
             </div>
             <!-- Columna derecha: imagen de portada -->
             <div class="col-md-4 text-center">
                 @if($libro->ruta_portada)
-                    <img src="{{ asset('storage/private/' . $libro->ruta_portada) }}" alt="Portada del libro" class="img-fluid rounded shadow">
+                <img src="{{ asset('storage/' . $libro->ruta_portada) }}" alt="Portada del libro" class="img-fluid rounded shadow">
+
                 @else
                     <p>No hay portada disponible</p>
                 @endif
@@ -102,7 +99,17 @@
                     @foreach($copias as $copia)
                     <tr>
                         <td>{{ $copia->codigo }}</td>
-                        <td>{{ $copia->estado }}</td>
+                        @if ($copia->estado == 'disponible')
+                                    <td><p class="badge text-bg-success">{{ $copia->estado }}</p></td>
+                        @elseif ($copia->estado == 'prestado')
+                                    <td><p class="badge text-bg-primary">{{ $copia->estado }}</p></td>
+                        @elseif ($copia->estado == 'extraviado')
+                                    <td><p class="badge text-bg-danger">{{ $copia->estado }}</p></td>
+                        @elseif ($copia->estado == 'reservado')
+                                    <td><p class="badge text-bg-warning">{{ $copia->estado }}</p></td>
+                        @endif
+                        
+                                
                         <td>
                             <div class="d-grid gap-2 d-md-block">
                                 <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $copia->id }}">Eliminar</button>

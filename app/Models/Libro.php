@@ -18,18 +18,29 @@ class Libro extends Model
     }
 
     public function categoria_libros(){
-        return $this->hasMany(Categoria_libro::class);
+        return $this->hasMany(Categoria_libro::class,'id_libro');
     }
-    /*public function categorias() { 
+
+    /*
+    public function categorias() { 
         return $this->belongsToMany(Categoria::class, 'categoria_libro', 'id_libro', 'id_categoria'); 
     }*/
 
-    public static function handleUploadImage($image){
-        $file = $image;
-        $name = time() . $file->getClientOriginalName();
-        //$file->move(public_path().'/img/libros/', $name);
-        Storage::putFileAs('libros',$file,$name,'public');
-        return $name;
+    public static function handleUploadImage($image)
+{
+    // Verifica si se ha subido una imagen
+    if ($image) {
+        // Definir el nombre del archivo con el tiempo actual y el nombre original
+        $name = time() . '_' . $image->getClientOriginalName();
+        
+        // Usar el disco 'public' y guardarlo en 'libros'
+        $path = $image->storeAs('libros', $name, 'public');
+        
+        // Retorna la ruta para que sea almacenada en la base de datos
+        return $path;  // Deberías retornar la ruta completa del archivo
     }
+    return null; // Si no se sube imagen, retornar null
+}
+
 
 }
