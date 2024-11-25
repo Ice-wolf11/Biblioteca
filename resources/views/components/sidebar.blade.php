@@ -116,8 +116,20 @@
     <!-- Nav Item - Charts -->
     <li class="nav-item">
         <a class="nav-link" href="{{route('areas.index')}}">
-            <i class="fas fa-solid fa-tag"></i>
+            <i class="fas fa-solid fa-bars"></i>
             <span>Areas</span></a>
+    </li>
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="">
+            <i class="fas fa-solid fa-user"></i>
+            <span>Usuarios</span></a>
+    </li>
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="">
+            <i class="fas fa-solid fa-ghost"></i>
+            <span>Roles y permisos</span></a>
     </li>
 
     <!-- Divider -->

@@ -16,9 +16,9 @@
             @csrf
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="nombre" class="form-label">Nombre:</label>
-                    <input type="text" name="nombre" id="nombre" class="form-control" value="{{old('nombre')}}">
-                    @error('nombre')
+                    <label for="descripcion" class="form-label">Nombre:</label>
+                    <input type="text" name="descripcion" id="descripcion" class="form-control" value="{{old('descripcion')}}">
+                    @error('descripcion')
                         <small class="text-danger">{{'*'.$message }}</small>
                     @enderror
                 </div>

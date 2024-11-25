@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreAreaRequest;
+use App\Http\Requests\UpdateAreaRequest;
 use App\Models\Area;
 use Illuminate\Support\Facades\DB;
 
@@ -31,10 +32,11 @@ class areaController extends Controller
      */
     public function store(StoreAreaRequest $request)
     {
+        //dd($request);
         try{
-            DB:beginTransaction();
+            DB::beginTransaction();
             $area = Area::create([
-                'descipcion' => $request->validated()['nombre'],
+                'descripcion' => $request->validated()['descripcion'],
             ]);
             DB::commit();
         }catch(Exception $e){
@@ -54,17 +56,18 @@ class areaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Area $area)
     {
-        //
+        return view('area.edit',['area'=>$area]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateAreaRequest $request, Area $area)
     {
-        //
+        Area::where('id',$area->id)->update($request->validated());
+        return redirect()->route('areas.index')->with('success', 'Registro actualizado correctamente');
     }
 
     /**
@@ -72,6 +75,8 @@ class areaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $area = Area::find($id);
+        Area::where('id',$area->id)->delete();
+        return redirect()->route('areas.index')->with('success','Registro Eliminado Correctamente');
     }
 }
