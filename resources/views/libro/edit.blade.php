@@ -45,22 +45,23 @@
                     <div class="mb-3"> 
                         <div class="col-md-8"> 
                             <label for="autores" class="form-label">Autor:</label> 
-                            <select data-size="4" title="Seleccione un autor" data-live-search="true" name="autores[]" id="autores" class="form-control selectpicker show-tick"> 
-                                @foreach ($autores as $item) 
-                                    <option value="{{$item->id}}" {{ (in_array($item->id , old('autores',[]))) ? 'selected' : '' }}>{{$item->Nombre}}</option>
-                                @endforeach 
+                            <select data-size="4" title="Seleccione un autor" data-live-search="true" name="autores[]" id="autores" class="form-control selectpicker show-tick">
+                                @foreach ($autores as $item)
+                                    <option value="{{$item->id}}" {{ $libro->id_autor == $item->id ? 'selected' : '' }}>{{$item->Nombre}}</option>
+                                @endforeach
                             </select> 
                             @error('autores') 
                                 <small class="text-danger">{{ '*' . $message }}</small> 
                             @enderror 
                         </div> 
                     </div>
+                    
                     <div class="mb-3">
                         <div class="col-md-8">
                             <label for="categorias" class="form-label">Categorías:</label>
                             <select data-size="4" title="Seleccione las categorías" data-live-search="true" name="categorias[]" id="categorias" class="form-control selectpicker show-tick" multiple>
                                 @foreach ($categorias as $item)
-                                    <option value="{{$item->id}}" {{ (in_array($item->id , old('categorias',[]))) ? 'selected' : '' }}>{{$item->nombre}}</option>
+                                    <option value="{{$item->id}}" {{ in_array($item->id, $categoriasAsociadas->pluck('id')->toArray()) ? 'selected' : '' }}>{{$item->nombre}}</option>
                                 @endforeach
                             </select>
                             @error('categorias')
@@ -68,6 +69,7 @@
                             @enderror
                         </div>
                     </div>
+                    
                     <div class="text-center">
                         <button type="submit" class="btn btn-success">Actualizar</button>
                         <a href="{{ route('libros.index') }}" class="btn btn-secondary">Cancelar</a>
