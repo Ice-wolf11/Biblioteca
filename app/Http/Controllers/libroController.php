@@ -108,9 +108,42 @@ class libroController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateLibroRequest $request, Libro $libro)
-    {
-        //
+{
+    try {
+        DB::beginTransaction();
+
+        // Actualizar datos del libro
+        $libro->titulo = $request->validated()['titulo'];
+        $libro->fecha_publicacion = $request->validated()['fecha_publicacion'];
+
+        // Si se subió una nueva portada, procesarla
+        if ($request->hasFile('portada')) {
+            $archivo = Libro::handleUploadImage($request->file('portada'));
+            $libro->ruta_portada = $archivo;
+        }
+
+        // Guardar cambios en el libro
+        $libro->save();
+
+        // Actualizar las categorías asociadas
+        $categorias = $request->validated()['categorias'];
+        Categoria_libro::where('id_libro', $libro->id)->delete(); // Eliminar categorías antiguas
+        foreach ($categorias as $categoria_id) {
+            Categoria_libro::create([
+                'id_libro' => $libro->id,
+                'id_categoria' => $categoria_id,
+            ]);
+        }
+
+        DB::commit();
+        return redirect()->route('libros.index')->with('success', 'Libro actualizado correctamente.');
+    } catch (Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->withErrors(['error' => $e->getMessage()]);
     }
+}
+
+
     
 
     /**

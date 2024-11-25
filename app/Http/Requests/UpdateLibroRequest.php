@@ -19,19 +19,17 @@ class UpdateLibroRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    /*public function rules(): array
-    {
-        $libro = $this->route('libro');
-        $libroid = $libro->id;
-    
-        return [
-            'titulo' => 'required|max:255|unique:libros,titulo,' . $libroid, // Corregido aquí
-            'fecha_publicacion' => 'nullable|date',
-            'portada' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-            'autores' => 'nullable',
-            'categorias' => 'nullable',
-        ];
-    }*/
+    public function rules()
+{
+    return [
+        'titulo' => 'required|string|max:255',
+        'fecha_publicacion' => 'required|date',
+        'portada' => 'nullable|image|max:2048',
+        'categorias' => 'nullable|array',
+        'categorias.*' => 'exists:categorias,id',
+    ];
+}
+
     
 
 }

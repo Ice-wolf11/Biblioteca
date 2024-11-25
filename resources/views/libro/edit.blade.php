@@ -22,47 +22,46 @@
                     @csrf
                     <div class="mb-3">
                         <label for="titulo" class="form-label">Título:</label>
-                        <input type="text" name="titulo" id="titulo" class="form-control" value="{{ old('titulo', $libro->titulo) }}" readonly>
+                        <input type="text" name="titulo" id="titulo" class="form-control" value="{{ old('titulo', $libro->titulo) }}">
                         @error('titulo')
                             <small class="text-danger">{{ '*' . $message }}</small>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="fecha" class="form-label">Fecha Publicación:</label>
-                        <input type="date" name="fecha_publicacion" id="fecha_publicacion" class="form-control" value="{{ old('fecha_publicacion', $libro->fecha_publicacion) }}" readonly>
+                        <input type="date" name="fecha_publicacion" id="fecha_publicacion" class="form-control" value="{{ old('fecha_publicacion', $libro->fecha_publicacion) }}">
                         @error('fecha_publicacion')
                             <small class="text-danger">{{ '*' . $message }}</small>
                         @enderror
                     </div>
-                    
-                    <div class="mb-3"> 
-                        <div class="col-md-8"> 
-                            <label for="autores" class="form-label">Autor:</label> 
-                            <p>{{ $libro->autor->Nombre }}</p>
-                            
-                            @error('autores') 
-                                <small class="text-danger">{{ '*' . $message }}</small> 
-                            @enderror 
-                        </div> 
+                    <div class="mb-3">
+                        <label for="portada" class="form-label">Portada:</label>
+                        <input type="file" name="portada" id="portada" class="form-control">
+                        
+                        @error('portada')
+                            <small class="text-danger">{{ '*' . $message }}</small>
+                        @enderror
                     </div>
+                    
                     <div class="mb-3">
                         <div class="col-md-8">
                             <label for="categorias" class="form-label">Categorías:</label>
-                            <ul>
-                                @foreach ($categoriasAsociadas as $categoria)
-                                    <li>{{ $categoria->nombre }}</li>
+                            <select data-size="4" title="Seleccione las categorías" data-live-search="true" name="categorias[]" id="categorias" class="form-control selectpicker show-tick" multiple>
+                                @foreach ($categorias as $item)
+                                    <option value="{{$item->id}}" {{ (in_array($item->id , old('categorias',[]))) ? 'selected' : '' }}>{{$item->nombre}}</option>
                                 @endforeach
-                            </ul>
-                            
+                            </select>
                             @error('categorias')
                                 <small class="text-danger">{{ '*' . $message }}</small>
                             @enderror
                         </div>
                     </div>
                     <div class="text-center">
-                        <a type="submit" class="btn btn-primary" href="{{route('libros.index')}}">Volver</a>
+                        <button type="submit" class="btn btn-success">Actualizar</button>
+                        <a href="{{ route('libros.index') }}" class="btn btn-secondary">Cancelar</a>
                     </div>
                 </form>
+                
             </div>
             <!-- Columna derecha: imagen de portada -->
             <div class="col-md-4 text-center">
