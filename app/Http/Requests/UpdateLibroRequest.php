@@ -20,15 +20,18 @@ class UpdateLibroRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules()
-{
-    return [
-        'titulo' => 'required|string|max:255',
-        'fecha_publicacion' => 'required|date',
-        'portada' => 'nullable|image|max:2048',
-        'categorias' => 'nullable|array',
-        'categorias.*' => 'exists:categorias,id',
-    ];
-}
+    {
+        return [
+            'titulo' => 'required|string|max:255',
+            'fecha_publicacion' => 'required|date',
+            'portada' => 'nullable|image|max:2048',
+            'categorias' => 'nullable|array',
+            'categorias.*' => 'exists:categorias,id',
+            'autores' => 'nullable|array|min:1',
+            'autores.*' => 'exists:autores,id',
+        ];
+    }
+    
 
     
 

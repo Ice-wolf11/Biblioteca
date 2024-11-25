@@ -42,7 +42,19 @@
                             <small class="text-danger">{{ '*' . $message }}</small>
                         @enderror
                     </div>
-                    
+                    <div class="mb-3"> 
+                        <div class="col-md-8"> 
+                            <label for="autores" class="form-label">Autor:</label> 
+                            <select data-size="4" title="Seleccione un autor" data-live-search="true" name="autores[]" id="autores" class="form-control selectpicker show-tick"> 
+                                @foreach ($autores as $item) 
+                                    <option value="{{$item->id}}" {{ (in_array($item->id , old('autores',[]))) ? 'selected' : '' }}>{{$item->Nombre}}</option>
+                                @endforeach 
+                            </select> 
+                            @error('autores') 
+                                <small class="text-danger">{{ '*' . $message }}</small> 
+                            @enderror 
+                        </div> 
+                    </div>
                     <div class="mb-3">
                         <div class="col-md-8">
                             <label for="categorias" class="form-label">Categorías:</label>

@@ -122,6 +122,11 @@ class libroController extends Controller
             $libro->ruta_portada = $archivo;
         }
 
+        // Actualizar el autor si se envió
+        if (isset($request->validated()['autores'][0])) {
+            $libro->id_autor = $request->validated()['autores'][0];
+        }
+
         // Guardar cambios en el libro
         $libro->save();
 
@@ -142,7 +147,6 @@ class libroController extends Controller
         return redirect()->back()->withErrors(['error' => $e->getMessage()]);
     }
 }
-
 
     
 
