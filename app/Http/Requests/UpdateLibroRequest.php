@@ -25,14 +25,10 @@ class UpdateLibroRequest extends FormRequest
             'titulo' => 'required|string|max:255',
             'fecha_publicacion' => 'required|date',
             'portada' => 'nullable|image|max:2048',
-            'categorias' => 'nullable|array',
+            'categorias' => 'required|array|min:1',  // Cambiado a required y agregado min:1
             'categorias.*' => 'exists:categorias,id',
             'autores' => 'nullable|array|min:1',
             'autores.*' => 'exists:autores,id',
         ];
     }
-    
-
-    
-
 }
