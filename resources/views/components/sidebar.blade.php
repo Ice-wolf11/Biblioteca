@@ -109,6 +109,17 @@
             <span>Libros</span></a>
     </li>
 
+
+    <div class="sidebar-heading">Admin. Prestamos </div>
+
+    <div class="sidebar-heading">Admin. Users</div>
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('areas.index')}}">
+            <i class="fas fa-solid fa-tag"></i>
+            <span>Areas</span></a>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
