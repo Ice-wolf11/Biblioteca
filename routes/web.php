@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\autoreController;
 use App\Http\Controllers\categoriaController;
+use App\Http\Controllers\catalogoController;
 use App\Http\Controllers\libroController;
 use App\Http\Controllers\copia_libroController;
 use App\Http\Controllers\areaController;
@@ -10,10 +11,11 @@ use App\Http\Controllers\loginController;
 use App\Http\Controllers\logoutController;
 use App\Http\Controllers\personaController;
 use Illuminate\Support\Facades\Route;
-/*
-Route::get('/', function () {
-    return view('welcome');
-});*/
+
+
+
+Route::resource('catalogo', catalogoController::class);
+
 
 //rutas categorias
 

@@ -111,6 +111,14 @@
 
 
     <div class="sidebar-heading">Admin. Prestamos </div>
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('catalogo.index')}}">
+            <i class="fas fa-solid fa-bars"></i>
+            <span>Catalogo</span></a>
+    </li>
+
+
+    <!--usuarios-->
 
     <div class="sidebar-heading">Admin. Users</div>
     <!-- Nav Item - Charts -->
