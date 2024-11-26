@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Http\Requests\StoreLibroRequest;
 use App\Http\Requests\UpdateLibroRequest;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Autore;
 use App\Models\Categoria;
 use App\Models\Categoria_libro;
@@ -155,8 +156,40 @@ class libroController extends Controller
      */
     public function destroy(string $id)
     {
-        $libro = Libro::find($id);
-        Libro::where('id',$libro->id)->delete();
+        //$libro = Libro::findOrFail($id); // Utiliza findOrFail para manejar el caso en que no se encuentre el trámite
+        /*$libro = Libro::find($id);
+        $filePath = 'public/' . $libro->ruta_portada;
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+        }
+        //dd($filePath);
+        $libro->delete();
+        //Libro::where('id',$libro->id)->delete();
         return redirect()->route('libros.index')->with('success', 'Registro eliminado correctamente');
+        */
+        $libro = Libro::findOrFail($id); // Utiliza findOrFail para manejar el caso en que no se encuentre el trámite
+
+        $filePath = 'public/libros/' . $libro->ruta_portada;
+
+        try {
+            // Comienza una transacción para asegurarte de que ambas operaciones (eliminación del archivo y del registro) se completen
+            DB::beginTransaction();
+
+            // Elimina el archivo PDF si existe
+            if (Storage::exists($filePath)) {
+                Storage::delete($filePath);
+            }
+
+            // Elimina el registro del trámite
+            $libro->delete();
+
+            DB::commit();
+
+            return redirect()->route('libros.index')->with('success', 'Libro Eliminado Correctamente.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('libros.index')->with('error', 'Ocurrió un error al eliminar el Libro: ' . $e->getMessage());
+        }
     }
 }

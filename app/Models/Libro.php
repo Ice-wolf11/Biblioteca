@@ -27,20 +27,13 @@ class Libro extends Model
     }*/
 
     public static function handleUploadImage($image)
-{
-    // Verifica si se ha subido una imagen
-    if ($image) {
-        // Definir el nombre del archivo con el tiempo actual y el nombre original
-        $name = time() . '_' . $image->getClientOriginalName();
-        
-        // Usar el disco 'public' y guardarlo en 'libros'
-        $path = $image->storeAs('libros', $name, 'public');
-        
-        // Retorna la ruta para que sea almacenada en la base de datos
-        return $path;  // Deberías retornar la ruta completa del archivo
+    {
+        $file = $image;
+        $name = time() . $file->getClientOriginalName();
+        //$pdf->move(public_path('/archivos/pdfTramite/'), $name);
+        Storage::putFileAs('public/libros',$file,$name,'public');
+        return $name;
     }
-    return null; // Si no se sube imagen, retornar null
-}
 
 
 }

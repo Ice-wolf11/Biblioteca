@@ -80,7 +80,7 @@
             <!-- Columna derecha: imagen de portada -->
             <div class="col-md-4 text-center">
                 @if($libro->ruta_portada)
-                <img src="{{ asset('storage/' . $libro->ruta_portada) }}" alt="Portada del libro" class="img-fluid rounded shadow">
+                <img src="{{ asset('storage/libros/' . $libro->ruta_portada) }}" alt="Portada del libro" class="img-fluid rounded shadow">
 
                 @else
                     <p>No hay portada disponible</p>
