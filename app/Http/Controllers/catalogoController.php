@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Libro;
 use Illuminate\Http\Request;
 
 class catalogoController extends Controller
@@ -11,7 +11,8 @@ class catalogoController extends Controller
      */
     public function index()
     {
-        return view('catalogo.index');
+        $libro = Libro::all();
+        return view('catalogo.index',['libros' => $libro]);
     }
 
     /**
