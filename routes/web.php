@@ -4,7 +4,8 @@ use App\Http\Controllers\autoreController;
 use App\Http\Controllers\categoriaController;
 use App\Http\Controllers\libroController;
 use App\Http\Controllers\copia_libroController;
-use App\Http\Controllers\areaController; 
+use App\Http\Controllers\areaController;
+use App\Http\Controllers\personaController;
 use Illuminate\Support\Facades\Route;
 /*
 Route::get('/', function () {
@@ -29,6 +30,9 @@ Route::resource('autores',autoreController::class);
 //rutas areas
 Route::resource('areas',areaController::class);
 
+
+//rutas pesonas
+Route::resource('personas',personaController::class);
 
 
 Route::get('/', function () {

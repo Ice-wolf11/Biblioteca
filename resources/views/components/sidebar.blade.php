@@ -121,7 +121,7 @@
     </li>
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{{route('personas.index')}}">
             <i class="fas fa-solid fa-user"></i>
             <span>Usuarios</span></a>
     </li>
