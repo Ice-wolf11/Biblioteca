@@ -1,9 +1,22 @@
 @extends('template')
 @section('title','Panel')
 @push('css')
-    
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endpush
 @section('content')
+@if (session('success'))
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        let message = "{{ session('success') }}";
+        Swal.fire(message);
+
+    });
+</script>
+@endif
+
+
+<!--si quieres eliminas esto-->
      <!-- Page Heading -->
      <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>

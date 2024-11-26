@@ -20,6 +20,7 @@
     @stack('css')
 </head>
 
+@auth
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -105,5 +106,8 @@
     <script src="{{asset('js/demo/chart-pie-demo.js')}}"></script>
     @stack('js')
 </body>
-
+@endauth
+@guest
+    @include('pages.401')
+@endguest
 </html>

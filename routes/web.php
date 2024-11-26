@@ -5,6 +5,9 @@ use App\Http\Controllers\categoriaController;
 use App\Http\Controllers\libroController;
 use App\Http\Controllers\copia_libroController;
 use App\Http\Controllers\areaController;
+use App\Http\Controllers\homeController;
+use App\Http\Controllers\loginController;
+use App\Http\Controllers\logoutController;
 use App\Http\Controllers\personaController;
 use Illuminate\Support\Facades\Route;
 /*
@@ -34,16 +37,19 @@ Route::resource('areas',areaController::class);
 //rutas pesonas
 Route::resource('personas',personaController::class);
 
+//rutas login
 
+Route::get('/login', [loginController::class,'index'])->name('login');
+Route::post('/login', [loginController::class,'login']);
+Route::get('/logout',[logoutController::class,'logout'])->name('logout');
+//rutas vistas principales
 Route::get('/', function () {
-    return view('template');
-});
-Route::get('/panel', function () {
-    return view('panel.index');
-})->name('panel');
-Route::get('/login', function () {
-    return view('auth.login');
-});
+    return view('welcome');
+})->name('index');
+Route::get('/panel',[homeController::class,'index'])->name('panel');
+
+
+
 Route::get('/register', function () {
     return view('auth.register');
 });
