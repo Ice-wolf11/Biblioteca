@@ -10,7 +10,18 @@ use App\Http\Controllers\homeController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\logoutController;
 use App\Http\Controllers\personaController;
+use App\Http\Controllers\reservaController;
 use Illuminate\Support\Facades\Route;
+
+
+
+
+//ruta para reservas
+Route::resource('reservas', reservaController::class)->except(['create']);
+
+Route::get('reserva/create/{id}', [reservaController::class, 'create'])->name('reservas.create');
+
+
 
 
 //ruta catalogo
@@ -18,11 +29,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/catalogo/filter', [catalogoController::class, 'filter'])->name('catalogo.filter');
 Route::resource('catalogo', catalogoController::class);
 
-
 //rutas categorias
-
 Route::resource('categorias',categoriaController::class);
-
 
 //rutas libros
 Route::resource('libros',libroController::class);

@@ -29,7 +29,7 @@
     <div id="book-container" class="row">
         @foreach ($libros as $libro)
         <div class="col-md-3 mb-4">
-            <a href="{{ route('libros.show', $libro->id) }}" class="text-decoration-none">
+            <a href="{{ route('reservas.create', $libro->id) }}" class="text-decoration-none">
                 <div class="card w-6 shadow-sm">
                     <img class="card-img-top" src="{{ asset('storage/libros/' . $libro->ruta_portada) }}" alt="portada">  
                     <div class="card-body text-left">
