@@ -2,7 +2,7 @@
 @section('title', 'Reservas')
 
 @push('css')
-<!-- Puedes agregar estilos opcionales si es necesario -->
+<!-- Agrega estilos opcionales aquí -->
 @endpush
 
 @section('content')
@@ -18,7 +18,7 @@
     <div class="row">
         <!-- Columna izquierda: formulario -->
         <div class="col-md-8">
-            <form action="{{ route('reservas.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('reservas.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label for="titulo" class="form-label">Título:</label>
@@ -36,7 +36,7 @@
                         <p>{{ $libro->autor->Nombre }}</p>
                     </div> 
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="categorias" class="form-label">Categorías:</label>
                     <ul>
@@ -45,21 +45,30 @@
                         @endforeach
                     </ul>
                 </div>
-                
-                <!-- Aquí agregamos el campo de copias disponibles -->
+
+                <!-- Mostrar las copias disponibles -->
                 <div class="mb-3">
+                    <label for="copias_disponibles" class="form-label">Copias Disponibles:</label>
                     @php
-                        $copiasDisponibles = $libro->copia_libros->where('estado', 'disponible')->count();
+                        $copiasDisponibles = $libro->copia_libros->where('estado', 'disponible');
                     @endphp
-                    @if ($copiasDisponibles > 0)
-                        <p class="text-success">¡Hay {{ $copiasDisponibles }} copias disponibles!</p>
+                    @if ($copiasDisponibles->count() > 0)
+                        <select name="id_copia" id="id_copia" class="form-select" required>
+                            <option value="">Selecciona una copia</option>
+                            @foreach ($copiasDisponibles as $copia)
+                                <option value="{{ $copia->id }}">{{ $copia->codigo }}</option>
+                            @endforeach
+                        </select>
                     @else
                         <p class="text-danger">Lo sentimos, no hay copias disponibles en este momento.</p>
                     @endif
                 </div>
 
+                <!-- Aquí, necesitarás enviar también la persona que está haciendo la reserva -->
+                <input type="hidden" name="id_persona" value="{{ auth()->user()->persona->id }}">
+
                 <div class="text-center">
-                    <button type="submit" class="btn btn-success" @if ($copiasDisponibles <= 0) disabled @endif>Reservar</button>
+                    <button type="submit" class="btn btn-success" @if ($copiasDisponibles->count() == 0) disabled @endif>Reservar</button>
                     <a href="{{ route('catalogo.index') }}" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
@@ -75,9 +84,4 @@
         </div>
     </div>
 </div>
-
 @endsection
-
-@push('js')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
-@endpush

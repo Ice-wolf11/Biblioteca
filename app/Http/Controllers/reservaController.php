@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Copia_libro;
 use App\Models\Libro;
+use App\Models\Reserva;
 use Illuminate\Http\Request;
 
 class reservaController extends Controller
@@ -12,7 +14,7 @@ class reservaController extends Controller
      */
     public function index()
     {
-        //esta cosa ahorita la hago funcionar
+        return view('reserva.index');
     }
 
     /**
@@ -31,7 +33,31 @@ class reservaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validar el formulario
+        $request->validate([
+            'id_persona' => 'required|exists:personas,id', // Asegúrate de que la persona esté registrada
+            'id_copia' => 'required|exists:copia_libros,id',
+        ]);
+
+        // Verificar que la copia esté disponible
+        $copia = Copia_libro::find($request->id_copia);
+
+        if ($copia->estado != 'disponible') {
+            return redirect()->back()->with('error', 'La copia seleccionada no está disponible.');
+        }
+
+        // Crear la reserva
+        $reserva = Reserva::create([
+            'estado' => 'activo', // El estado de la reserva es 'activo' por defecto
+            'id_persona' => $request->id_persona,
+            'id_copia' => $request->id_copia,
+        ]);
+
+        // Cambiar el estado de la copia a 'reservado'
+        $copia->estado = 'reservado';
+        $copia->save();
+
+        return redirect()->route('reservas.index')->with('success', 'Reserva realizada con éxito.');
     }
 
     /**

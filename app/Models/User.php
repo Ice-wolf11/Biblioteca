@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     //metodo de relacion uno a uno
     public function persona(){
-        return $this->hasOne(Persona::class);
+        return $this->hasOne(Persona::class,'id_user');
 
     }
 }
