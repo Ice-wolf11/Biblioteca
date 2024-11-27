@@ -2,17 +2,29 @@
 @section('title', 'Reservas')
 
 @push('css')
-<!-- Agrega estilos opcionales aquí -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 @endpush
 
 @section('content')
 @include('partials.select')
+@include('layouts.partials.alert')
+
 <h1 class="mt-4 text-center">Reservar Libro</h1>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
     <li class="breadcrumb-item"><a href="{{ route('catalogo.index') }}">Catálogo</a></li>
     <li class="breadcrumb-item active">Reservar Libro</li>
 </ol>
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '{{ session('error') }}',
+        });
+    </script>
+@endif
 
 <div class="container w-75 border border-3 border-primary rounded p-4 mt-3">
     <div class="row">

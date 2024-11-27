@@ -32,33 +32,43 @@ class reservaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // Validar el formulario
-        $request->validate([
-            'id_persona' => 'required|exists:personas,id', // Asegúrate de que la persona esté registrada
-            'id_copia' => 'required|exists:copia_libros,id',
-        ]);
+{
+    // Validar el formulario
+    $request->validate([
+        'id_persona' => 'required|exists:personas,id', // Asegúrate de que la persona esté registrada
+        'id_copia' => 'required|exists:copia_libros,id',
+    ]);
 
-        // Verificar que la copia esté disponible
-        $copia = Copia_libro::find($request->id_copia);
+    // Verificar si el usuario ya tiene una reserva activa
+    $usuarioConReserva = Reserva::where('id_persona', $request->id_persona)
+        ->where('estado', 'activo')
+        ->exists();
 
-        if ($copia->estado != 'disponible') {
-            return redirect()->back()->with('error', 'La copia seleccionada no está disponible.');
-        }
-
-        // Crear la reserva
-        $reserva = Reserva::create([
-            'estado' => 'activo', // El estado de la reserva es 'activo' por defecto
-            'id_persona' => $request->id_persona,
-            'id_copia' => $request->id_copia,
-        ]);
-
-        // Cambiar el estado de la copia a 'reservado'
-        $copia->estado = 'reservado';
-        $copia->save();
-
-        return redirect()->route('reservas.index')->with('success', 'Reserva realizada con éxito.');
+    if ($usuarioConReserva) {
+        return redirect()->back()->with('error', 'Ya tienes una reserva activa. Solo puedes reservar un libro a la vez.');
     }
+
+    // Verificar que la copia esté disponible
+    $copia = Copia_libro::find($request->id_copia);
+
+    if ($copia->estado != 'disponible') {
+        return redirect()->back()->with('error', 'La copia seleccionada no está disponible.');
+    }
+
+    // Crear la reserva
+    $reserva = Reserva::create([
+        'estado' => 'activo', // El estado de la reserva es 'activo' por defecto
+        'id_persona' => $request->id_persona,
+        'id_copia' => $request->id_copia,
+    ]);
+
+    // Cambiar el estado de la copia a 'reservado'
+    $copia->estado = 'reservado';
+    $copia->save();
+
+    return redirect()->route('reservas.index')->with('success', 'Reserva realizada con éxito.');
+}
+
 
     /**
      * Display the specified resource.
