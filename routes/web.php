@@ -13,7 +13,9 @@ use App\Http\Controllers\personaController;
 use Illuminate\Support\Facades\Route;
 
 
-
+//ruta catalogo
+//Route::get('/catalogo', [catalogoController::class, 'index'])->name('catalogo.index');
+Route::get('/catalogo/filter', [catalogoController::class, 'filter'])->name('catalogo.filter');
 Route::resource('catalogo', catalogoController::class);
 
 
