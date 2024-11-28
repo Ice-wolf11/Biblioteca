@@ -18,9 +18,9 @@ class personaSeeder extends Seeder
                 'apellidos' => 'Sistema',
                 'dni' => 'sin dni',
                 'direccion' => 'no disponible',
-                'telefono' => 'no disponible',
-                'area_id'  => '1',
-                'user_id'  => '1'
+                'telefono' => 'no hay',
+                'id_area'  => '1',
+                'id_user'  => '1'
             ],
             
         ]);

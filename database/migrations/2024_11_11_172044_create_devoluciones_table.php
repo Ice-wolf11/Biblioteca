@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('fecha');
             $table->string('detalle');
-            $table->enum('estado', ['A tiempo', 'Atrasado'])->default('activo');
+            $table->enum('estado', ['A tiempo', 'Atrasado']);
             $table->foreignId('id_prestamo')->constrained('prestamos')->onDelete('cascade');
             $table->timestamps();
         });

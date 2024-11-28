@@ -12,6 +12,6 @@ class areaSeeder extends Seeder
      */
     public function run(): void
     {
-        Area::create(['nombre' => 'Soporte Tecnico']);
+        Area::create(['descripcion' => 'Soporte Tecnico']);
     }
 }
