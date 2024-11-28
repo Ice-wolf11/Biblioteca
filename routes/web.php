@@ -6,6 +6,7 @@ use App\Http\Controllers\catalogoController;
 use App\Http\Controllers\libroController;
 use App\Http\Controllers\copia_libroController;
 use App\Http\Controllers\areaController;
+use App\Http\Controllers\devolucioneController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\logoutController;
@@ -16,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 
 //rutas prestamos
+
+//rutas devoluciones
+Route::resource('devoluciones', devolucioneController::class);
 
 //rutas penalizacion
 

@@ -121,6 +121,11 @@
             <i class="fas fa-solid fa-bars"></i>
             <span>reservas</span></a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('prestamos.index')}}">
+            <i class="fas fa-solid fa-bars"></i>
+            <span>prestamos</span></a>
+    </li>
 
 
 
