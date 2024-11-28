@@ -15,7 +15,9 @@ use App\Http\Controllers\reservaController;
 use Illuminate\Support\Facades\Route;
 
 
+//rutas prestamos
 
+//rutas penalizacion
 
 //ruta para reservas
 Route::resource('reservas', reservaController::class)->except(['create']);

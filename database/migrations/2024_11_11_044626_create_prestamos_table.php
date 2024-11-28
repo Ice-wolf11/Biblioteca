@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('fecha_inicio');
             $table->date('fecha_limite');
-            $table->enum('estado', ['activo', 'devuelto','atrasado'])->default('activo');
+            $table->enum('estado', ['activo', 'devuelto'])->default('activo');
             $table->foreignId('id_persona')->nullable()->constrained('personas')->onDelete('set null');
             $table->foreignId('id_copia')->nullable()->constrained('copia_libros')->onDelete('set null');
             $table->timestamps();

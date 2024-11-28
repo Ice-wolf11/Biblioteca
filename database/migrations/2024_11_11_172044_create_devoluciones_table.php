@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('devoluciones', function (Blueprint $table) {
             $table->id();
-            #$table->timestamp('fecha')->useCurrent();
+            $table->date('fecha');
             $table->string('detalle');
+            $table->enum('estado', ['A tiempo', 'Atrasado'])->default('activo');
             $table->foreignId('id_prestamo')->constrained('prestamos')->onDelete('cascade');
             $table->timestamps();
         });

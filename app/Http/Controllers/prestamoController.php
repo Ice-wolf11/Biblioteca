@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Prestamo;
 use Illuminate\Http\Request;
 
 class prestamoController extends Controller
@@ -11,7 +12,8 @@ class prestamoController extends Controller
      */
     public function index()
     {
-        //
+        $prestamos = Prestamo::with('persona','copia_libro')->latest()->get();
+        return view('prestamo.index',['prestamos'=>$prestamos]);
     }
 
     /**
