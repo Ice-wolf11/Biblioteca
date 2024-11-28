@@ -15,4 +15,8 @@ class Copia_libro extends Model
     public function libro(){
         return $this->belongsTo(Libro::class,'id_libro');
     }
+
+    public function reservas(){
+        return $this->hasMany(Reserva::class);
+    }
 }

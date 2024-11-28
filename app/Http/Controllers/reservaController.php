@@ -14,7 +14,8 @@ class reservaController extends Controller
      */
     public function index()
     {
-        return view('reserva.index');
+        $reservas = Reserva::with('persona','copia_libro')->latest()->get();
+        return view('reserva.index',['reservas'=>$reservas]);
     }
 
     /**
@@ -99,6 +100,19 @@ class reservaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $reserva = Reserva::find($id);
+        // Verificar si la reserva tiene una copia asociada
+        if ($reserva->copia) {
+            // Cambiar el estado de la copia a 'disponible'
+            $reserva->copia->estado = 'disponible';
+            $reserva->copia->save();
+        }
+
+        // Eliminar la reserva
+        $reserva->delete();
+
+        Reserva::where('id',$reserva->id)->delete();
+
+        return redirect()->route('reservas.index')->with('success','Registro eliminado correctamente');
     }
 }

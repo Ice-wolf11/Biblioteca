@@ -10,6 +10,7 @@ use App\Http\Controllers\homeController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\logoutController;
 use App\Http\Controllers\personaController;
+use App\Http\Controllers\prestamoController;
 use App\Http\Controllers\reservaController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,8 @@ Route::resource('reservas', reservaController::class)->except(['create']);
 
 Route::get('reserva/create/{id}', [reservaController::class, 'create'])->name('reservas.create');
 
-
+//rutas prestamos
+Route::resource('prestamos',prestamoController::class);
 
 
 //ruta catalogo

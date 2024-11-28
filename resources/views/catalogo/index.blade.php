@@ -34,11 +34,6 @@
                     <img class="card-img-top" src="{{ asset('storage/libros/' . $libro->ruta_portada) }}" alt="portada">  
                     <div class="card-body text-left">
                         <h5 class="card-title">{{ $libro->titulo }}</h5>
-                        <p>Categorías: 
-                            @foreach ($libro->categoria_libros as $categoria_libro)
-                                {{ $categoria_libro->categoria->nombre }}@if(!$loop->last),@endif
-                            @endforeach
-                        </p>
                         <p>Copias Disponibles: 
                             {{ $libro->copia_libros->where('estado', 'disponible')->count() }}
                         </p>
@@ -78,8 +73,11 @@
                             <a href="/libros/${libro.id}" class="text-decoration-none">
                                 <div class="card w-6 shadow-sm">
                                     <img class="card-img-top" src="/storage/libros/${libro.ruta_portada}" alt="portada">  
-                                    <div class="card-body text-center">
+                                    <div class="card-body text-left">
                                         <h5 class="card-title">${libro.titulo}</h5>
+                                        <p>Copias Disponibles: 
+                                            {{ $libro->copia_libros->where('estado', 'disponible')->count() }}
+                                        </p>
                                     </div>
                                 </div>
                             </a>
