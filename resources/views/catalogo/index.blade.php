@@ -27,9 +27,9 @@
 
     <!-- Contenedor dinámico para los libros -->
     <div id="book-container" class="row">
-        @foreach ($libros as $libro)
+        @forelse ($libros as $libro)
         <div class="col-md-3 mb-4">
-            <a href="{{ route('reservas.create', $libro->id) }}" class="text-decoration-none">
+            <div class="text-decoration-none">
                 <div class="card w-6 shadow-sm">
                     <img class="card-img-top" src="{{ asset('storage/libros/' . $libro->ruta_portada) }}" alt="portada">  
                     <div class="card-body text-left">
@@ -38,10 +38,18 @@
                             {{ $libro->copia_libros->where('estado', 'disponible')->count() }}
                         </p>
                     </div>
+                    <div class="d-flex justify-content-center gap-2 mb-2">
+                        <a class="btn btn-success">Prestamo</a>
+                        <a href="{{ route('reservas.create', $libro->id) }}" class="btn btn-primary">Reserva</a>
+                    </div>
                 </div>
-            </a>
+            </div>
         </div>
-        @endforeach
+        @empty
+        <div class="col-12">
+            <p class="text-center text-muted">No hay libros disponibles.</p>
+        </div>
+        @endforelse
     </div>
     
     <!-- Controles de paginación -->
@@ -64,28 +72,42 @@
             .then(response => response.json())
             .then(data => {
                 const container = document.getElementById('book-container');
-                container.innerHTML = '';  // Limpiar el contenedor de libros
+                container.innerHTML = ''; // Limpiar el contenedor de libros
 
-                // Iterar sobre los libros devueltos y actualizar el contenedor
-                data.forEach(libro => {
-                    const bookCard = `
-                        <div class="col-md-3 mb-4">
-                            <a href="/libros/${libro.id}" class="text-decoration-none">
-                                <div class="card w-6 shadow-sm">
-                                    <img class="card-img-top" src="/storage/libros/${libro.ruta_portada}" alt="portada">  
-                                    <div class="card-body text-left">
-                                        <h5 class="card-title">${libro.titulo}</h5>
-                                        <p>Copias Disponibles: 
-                                            {{ $libro->copia_libros->where('estado', 'disponible')->count() }}
-                                        </p>
+                // Validar si hay libros en la respuesta
+                if (data.length === 0) {
+                    container.innerHTML = `
+                        <div class="col-12">
+                            <p class="text-center text-muted">No hay libros disponibles en esta categoría.</p>
+                        </div>
+                    `;
+                } else {
+                    // Iterar sobre los libros devueltos y actualizar el contenedor
+                    data.forEach(libro => {
+                        const bookCard = `
+                            <div class="col-md-3 mb-4">
+                                <div class="text-decoration-none">
+                                    <div class="card w-6 shadow-sm">
+                                        <img class="card-img-top" src="/storage/libros/${libro.ruta_portada}" alt="portada">  
+                                        <div class="card-body text-left">
+                                            <h5 class="card-title">${libro.titulo}</h5>
+                                            <p>Copias Disponibles: 
+                                                {{ $libro->copia_libros->where('estado', 'disponible')->count() }}
+                                            </p>
+                                        </div>
+                                        <div class="d-flex justify-content-center gap-2 mb-2">
+                                            <a class="btn btn-success">Prestamo</a>
+                                            <a href="/reservas/create/${libro.id}" class="btn btn-primary">Reserva</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>`;
-                    container.innerHTML += bookCard;  // Agregar los nuevos libros al contenedor
-                });
+                            </div>`;
+                        container.innerHTML += bookCard; // Agregar los nuevos libros al contenedor
+                    });
+                }
             })
             .catch(error => console.error('Error:', error));
     });
 </script>
+
 @endpush
