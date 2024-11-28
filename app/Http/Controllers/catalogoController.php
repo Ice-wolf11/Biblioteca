@@ -16,19 +16,25 @@ class catalogoController extends Controller
     public function filter(Request $request)
     {
         $categoriaId = $request->input('categoria_id');
-    
-        // Si se selecciona una categoría, filtramos los libros que tengan esa categoría a través de la tabla pivote
-        if ($categoriaId) {
-            $libros = Libro::whereHas('categoria_libros', function ($query) use ($categoriaId) {
-                $query->where('id_categoria', $categoriaId);
-            })->get();
-        } else {
-            // Si no se selecciona ninguna categoría, se devuelven todos los libros
-            $libros = Libro::all();
-        }
+        $libros = Libro::with('copiaLibros')
+            ->when($categoriaId, function ($query) use ($categoriaId) {
+                return $query->whereHas('categorias', function ($query) use ($categoriaId) {
+                    $query->where('id', $categoriaId);
+                });
+            })
+            ->get()
+            ->map(function ($libro) {
+                return [
+                    'id' => $libro->id,
+                    'titulo' => $libro->titulo,
+                    'ruta_portada' => $libro->ruta_portada,
+                    'copias_disponibles' => $libro->copia_libros->where('estado', 'disponible')->count(),
+                ];
+            });
     
         return response()->json($libros);
     }
+    
     
 
 
