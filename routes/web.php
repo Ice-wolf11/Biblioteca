@@ -16,7 +16,6 @@ use App\Http\Controllers\reservaController;
 use Illuminate\Support\Facades\Route;
 
 
-//rutas prestamos
 
 //rutas devoluciones
 Route::resource('devoluciones', devolucioneController::class);
@@ -30,6 +29,7 @@ Route::get('reserva/create/{id}', [reservaController::class, 'create'])->name('r
 
 //rutas prestamos
 Route::resource('prestamos',prestamoController::class);
+Route::get('prestamo/create/{id}', [prestamoController::class, 'create'])->name('prestamos.create');
 
 
 //ruta catalogo

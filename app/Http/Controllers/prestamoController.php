@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prestamo;
+use App\Models\Persona;
+use App\Models\Libro;
 use Illuminate\Http\Request;
 
 class prestamoController extends Controller
@@ -19,9 +21,11 @@ class prestamoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $persona = Persona::all();
+        $libro = Libro::with('autor', 'categoria_libros.categoria', 'copia_libros')->findOrFail($id);
+        return view('prestamo.create', compact('libro', 'persona'));
     }
 
     /**

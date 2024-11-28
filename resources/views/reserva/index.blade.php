@@ -43,7 +43,7 @@
                             @endif
                             <td>
                                 <div class="d-grid gap-2 d-md-block">
-                                    <a class="btn btn-success" href="{{route('prestamos.create')}}" type="submit">Crear Prestamo</a>
+                                    <a class="btn btn-success" href="{{route('prestamos.create', $reserva->copia_libro->libro->id)}}" type="submit">Crear Prestamo</a>
                                     <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$reserva->id}}">Eliminar</button>
                                        
                                 </div>    
