@@ -113,18 +113,18 @@
     <div class="sidebar-heading">Admin. Prestamos </div>
     <li class="nav-item">
         <a class="nav-link" href="{{route('catalogo.index')}}">
-            <i class="fas fa-solid fa-bars"></i>
+            <i class="fas fa-solid fa-eye"></i>
             <span>Catalogo</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{route('reservas.index')}}">
-            <i class="fas fa-solid fa-bars"></i>
-            <span>reservas</span></a>
+            <i class="fas fa-solid fa-folder-open"></i>
+            <span>Reservas</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{route('prestamos.index')}}">
-            <i class="fas fa-solid fa-bars"></i>
-            <span>prestamos</span></a>
+            <i class="fas fa-solid fa-bookmark"></i>
+            <span>Prestamos</span></a>
     </li>
 
 
