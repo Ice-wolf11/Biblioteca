@@ -102,11 +102,11 @@ class reservaController extends Controller
     {
         $reserva = Reserva::find($id);
         // Verificar si la reserva tiene una copia asociada
-        if ($reserva->copia) {
+        
             // Cambiar el estado de la copia a 'disponible'
-            $reserva->copia->estado = 'disponible';
-            $reserva->copia->save();
-        }
+            $reserva->copia_libro->estado = 'disponible';
+            $reserva->copia_libro->save();
+        
 
         // Eliminar la reserva
         $reserva->delete();

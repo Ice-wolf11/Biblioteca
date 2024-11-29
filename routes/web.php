@@ -29,7 +29,10 @@ Route::get('reserva/create/{id}', [reservaController::class, 'create'])->name('r
 
 //rutas prestamos
 Route::resource('prestamos',prestamoController::class);
-Route::get('prestamo/create/{id}', [prestamoController::class, 'create'])->name('prestamos.create');
+Route::get('prestamo/create-catalogo/{id}', [prestamoController::class, 'create_catalogo'])->name('prestamos.create-catalogo');
+Route::get('prestamo/create-reserva/{id}', [prestamoController::class, 'create_reserva'])->name('prestamos.create-reserva');
+Route::post('prestamos/store-catalogo', [prestamoController::class, 'store_catalogo'])->name('prestamos.store_catalogo');
+Route::post('prestamos/store-reserva', [prestamoController::class, 'store_reserva'])->name('prestamos.store_reserva');
 
 
 //ruta catalogo
@@ -56,6 +59,8 @@ Route::resource('areas',areaController::class);
 
 //rutas pesonas
 Route::resource('personas',personaController::class);
+Route::get('persona/search', [personaController::class, 'search'])->name('persona.search');
+
 
 //rutas login
 

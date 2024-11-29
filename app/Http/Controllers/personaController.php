@@ -15,6 +15,26 @@ class personaController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function search(Request $request)
+     {
+         $nombre = $request->input('nombre');
+         $persona = Persona::where('nombres', 'LIKE', "%$nombre%")->first();  // Busca la persona por nombre
+     
+         if ($persona) {
+             return response()->json([
+                 'id' => $persona->id,
+                 'nombres' => $persona->nombres,
+                 'apellidos' => $persona->apellidos,
+                 'dni' => $persona->dni,
+                 'direccion' => $persona->direccion,
+                 'telefono' => $persona->telefono,
+             ]);
+         } else {
+             return response()->json(null);
+         }
+     }
+      
     public function index()
     {
         $personas = Persona::with('user','area')->latest()->get();

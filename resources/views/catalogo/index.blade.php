@@ -39,7 +39,7 @@
                         </p>
                     </div>
                     <div class="d-flex justify-content-center gap-2 mb-2">
-                        <a href="{{route('prestamos.create', $libro->id)}}" class="btn btn-success">Prestamo</a>
+                        <a href="{{route('prestamos.create-catalogo', $libro->id)}}" class="btn btn-success">Prestamo</a>
                         <a href="{{ route('reservas.create', $libro->id) }}" class="btn btn-primary">Reserva</a>
                     </div>
                 </div>
