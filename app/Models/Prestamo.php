@@ -12,11 +12,11 @@ class Prestamo extends Model
     }
 
     public function devolucione(){
-        return $this->hasOne(Devolucione::class);
+        return $this->hasOne(Devolucione::class,'id_prestamo');
     }
 
     public function penalizacione(){
-        return $this->hasOne(Penalizacione::class);
+        return $this->hasOne(Penalizacione::class,'id_prestamo');
     }
 
     public function copia_libro(){

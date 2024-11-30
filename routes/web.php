@@ -10,6 +10,7 @@ use App\Http\Controllers\devolucioneController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\logoutController;
+use App\Http\Controllers\penalizacioneController;
 use App\Http\Controllers\personaController;
 use App\Http\Controllers\prestamoController;
 use App\Http\Controllers\reservaController;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::resource('devoluciones', devolucioneController::class);
 
 //rutas penalizacion
-
+Route::resource('penalizaciones', penalizacioneController::class);
 //ruta para reservas
 Route::resource('reservas', reservaController::class)->except(['create']);
 

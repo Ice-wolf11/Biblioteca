@@ -126,6 +126,11 @@
             <i class="fas fa-solid fa-bookmark"></i>
             <span>Prestamos</span></a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('devoluciones.index')}}">
+            <i class="fas fa-solid fa-retweet"></i>
+            <span>Devoluciones</span></a>
+    </li>
 
 
 
