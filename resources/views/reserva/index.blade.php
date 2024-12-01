@@ -43,13 +43,16 @@
                             @endif
                             <td>
                                 <div class="d-grid gap-2 d-md-block">
+                                    @can('crear-prestamo')
                                     @if ($reserva->estado == 'activo')
                                         <a class="btn btn-success" href="{{route('prestamos.create-reserva', $reserva->id)}}" type="submit">Crear Prestamo</a>
                                     @else
                                         <button class="btn btn-success"disabled>Crear Prestamo</button>
                                     @endif
+                                    @endcan
+                                    @can('eliminar-reserva')
                                     <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$reserva->id}}">Eliminar</button>
-                                       
+                                    @endcan
                                 </div>    
                             </td>                 
                         </tr>

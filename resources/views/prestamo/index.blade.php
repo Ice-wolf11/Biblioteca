@@ -43,13 +43,16 @@
                             <td>
                                 <div class="d-grid gap-2 d-md-block">
                                     @if ($prestamo->estado == 'activo')
+                                        @can('crear-devolucion')
                                         <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}">Devolucion</button>
+                                        @endcan
                                     @else
                                         <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}"disabled>Devolucion</button>
                                     @endif    
                                     <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#detalleModal-{{$prestamo->id}}">Detalle</button>
+                                    @can('eliminar-prestamo')
                                     <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$prestamo->id}}">Eliminar</button>
-                                       
+                                    @endcan
                                 </div>    
                             </td>                 
                         </tr>
@@ -295,9 +298,11 @@
 
                                     </div>
                                 </div>
-                                <div class="modal-footer">
+                                <div class="modal-footer">    
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                @can('editar-penalizacion')
                                 <button type="submit" class="btn btn-primary">Confirmar</button>
+                                @endcan
                                 </div>
                             </form>
                             </div>

@@ -12,6 +12,7 @@
         <li class="breadcrumb-item"><a href="{{route('panel')}}">Inicio</a></li>
         <li class="breadcrumb-item" active>Areas</li>
     </ol>
+    @can('crear-area')
     <div class="mb-4">
         <a href="{{route('areas.create')}}" class="btn btn-primary btn-icon-split">
             <span class="icon text-white-50">
@@ -20,7 +21,7 @@
             <span class="text">Nuevo Registro</span>
         </a>
     </div>
-
+    @endcan
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Lista areas</h6>
@@ -40,11 +41,12 @@
                             <td>{{$area->descripcion}}</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-block">
-                                    
+                                    @can('editar-area')
                                     <form action="{{route('areas.edit',['area'=>$area])}}" class="d-inline">@csrf<button class="btn btn-success" type="submit">Editar</button></form>
-                                    
+                                    @endcan
+                                    @can('eliminar-area')
                                     <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$area->id}}">Eliminar</button>
-                                       
+                                    @endcan   
                                 </div>    
                             </td>               
                         </tr>

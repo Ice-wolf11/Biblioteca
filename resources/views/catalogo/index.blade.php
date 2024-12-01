@@ -39,8 +39,12 @@
                         </p>
                     </div>
                     <div class="d-flex justify-content-center gap-2 mb-2">
+                        @can('crear-prestamo')
                         <a href="{{route('prestamos.create-catalogo', $libro->id)}}" class="btn btn-success">Prestamo</a>
+                        @endcan
+                        @can('crear-reserva')
                         <a href="{{ route('reservas.create', $libro->id) }}" class="btn btn-primary">Reserva</a>
+                        @endcan
                     </div>
                 </div>
             </div>

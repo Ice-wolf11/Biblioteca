@@ -89,6 +89,7 @@
         </div>
     </div>
     <div class="container w-75 border border-3 border-primary rounded p-4 mt-3">
+        @can('crear-copia')
         <div class="mb-4">
             <button class="btn btn-primary btn-icon-split" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{ $libro->id }}">
                 <span class="icon text-white-50">
@@ -97,6 +98,7 @@
                 <span class="text">Añadir copia</span>
             </button>
         </div>
+        @endcan
         <div class="table-responsive">
             <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -122,9 +124,11 @@
                         
                                 
                         <td>
+                            @can('eliminar-copia')
                             <div class="d-grid gap-2 d-md-block">
                                 <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $copia->id }}">Eliminar</button>
                             </div>
+                            @endcan
                         </td>
                     </tr>
                     <!-- Modal Eliminar copias -->

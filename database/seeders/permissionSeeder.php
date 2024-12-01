@@ -51,11 +51,11 @@ class permissionSeeder extends Seeder
             //penalizaciones
             'editar-penalizacion',
 
-            //persona
-            'ver-persona',
-            'crear-persona',
-            'editar-persona',
-            'eliminar-persona',
+            //usuario
+            'ver-usuario',
+            'crear-usuario',
+            'editar-usuario',
+            'eliminar-usuario',
 
             //prestamo
             'ver-prestamo',

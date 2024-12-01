@@ -12,6 +12,7 @@
         <li class="breadcrumb-item"><a href="{{route('panel')}}">Inicio</a></li>
         <li class="breadcrumb-item" active>Roles</li>
     </ol>
+    @can('crear-roles')
     <div class="mb-4">
         <a href="{{route('roles.create')}}" class="btn btn-primary btn-icon-split">
             <span class="icon text-white-50">
@@ -20,7 +21,7 @@
             <span class="text">Nuevo Registro</span>
         </a>
     </div>
-
+    @endcan
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Lista Roles</h6>
@@ -40,11 +41,12 @@
                             <td>{{$role->name}}</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-block">
-                                    
+                                    @can('editar-roles')                         
                                     <form action="{{route('roles.edit',['role'=>$role])}}" class="d-inline">@csrf<button class="btn btn-success" type="submit">Editar</button></form>
-                                    
+                                    @endcan
+                                    @can('eliminar-roles')
                                     <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$role->id}}">Eliminar</button>
-                                       
+                                    @endcan
                                 </div>    
                             </td>               
                         </tr>
