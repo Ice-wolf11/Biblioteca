@@ -56,11 +56,26 @@ class prestamoController extends Controller
         $usuarioConPrestamoActivo = Prestamo::where('id_persona', $validatedData['id_persona'])
             ->where('estado', 'activo')
             ->exists();
+        $usuarioConReserva = Reserva::where('id_persona', $request->id_persona)
+            ->where('estado', 'activo')
+            ->exists();
+        $persona = Persona::with('prestamos.penalizacione')->findOrFail($request->id_persona);
 
+        $tienePenalizacionActiva = $persona->prestamos->contains(function ($prestamo) {
+            return $prestamo->penalizacione && $prestamo->penalizacione->estado === 'activo';
+        });
+        
         if ($usuarioConPrestamoActivo) {
             // Redirigir a la misma página con un mensaje de error
             return back()->with('error', 'La persona ya tiene un préstamo activo. No puede tener más de un préstamo a la vez.');
         }
+        if ($usuarioConReserva) {
+            return redirect()->back()->with('error', 'Ya tienes una reserva activa. Solo puedes reservar un libro a la vez.');
+        }
+        if ($tienePenalizacionActiva) {
+            return redirect()->back()->with('error', 'Tienes una penalización pendiente. Por favor, resuélvela.');
+        }
+
 
         try {
             // Iniciar una transacción para garantizar la integridad de los datos
@@ -105,12 +120,25 @@ class prestamoController extends Controller
         $usuarioConPrestamoActivo = Prestamo::where('id_persona', $validatedData['id_persona'])
             ->where('estado', 'activo')
             ->exists();
+        $usuarioConReserva = Reserva::where('id_persona', $request->id_persona)
+            ->where('estado', 'activo')
+            ->exists();
+        $persona = Persona::with('prestamos.penalizacione')->findOrFail($request->id_persona);
 
+        $tienePenalizacionActiva = $persona->prestamos->contains(function ($prestamo) {
+            return $prestamo->penalizacione && $prestamo->penalizacione->estado === 'activo';
+        });
+        
         if ($usuarioConPrestamoActivo) {
             // Redirigir a la misma página con un mensaje de error
             return back()->with('error', 'La persona ya tiene un préstamo activo. No puede tener más de un préstamo a la vez.');
         }
-
+        if ($usuarioConReserva) {
+            return redirect()->back()->with('error', 'Ya tienes una reserva activa. Solo puedes reservar un libro a la vez.');
+        }
+        if ($tienePenalizacionActiva) {
+            return redirect()->back()->with('error', 'Tienes una penalización pendiente. Por favor, resuélvela.');
+        }
         try {
             // Iniciar una transacción para garantizar la integridad de los datos
             DB::beginTransaction();

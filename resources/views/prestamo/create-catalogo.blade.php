@@ -67,11 +67,17 @@
                 </div>
                 <div class="mb-3">
                     <label for="fecha_inicio" class="form-label">Fecha Inicio:</label>
-                    <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="{{ date('Y-m-d') }}" >
+                    <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="{{ date('Y-m-d') }}" readonly>
+                    @error('fecha_inicio')
+                        <small class="text-danger">{{ '*' . $message }}</small>
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label for="fecha_fin" class="form-label">Fecha Limite:</label>
                     <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" value="" >
+                    @error('fecha_fin')
+                        <small class="text-danger">{{ '*' . $message }}</small>
+                    @enderror
                 </div>
                 
                 <!-- Mostrar las copias disponibles -->
@@ -88,6 +94,9 @@
                                 <option value="{{ $copia->id }}">{{ $copia->codigo }}</option>
                             @endforeach
                         </select>
+                        @error('id_copia')
+                            <small class="text-danger">{{ '*' . $message }}</small>
+                        @enderror
                     @else
                         <p class="text-danger">Lo sentimos, no hay copias disponibles en este momento.</p>
                     @endif

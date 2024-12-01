@@ -20,7 +20,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-striped" id="datatablesSimple" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Usuario</th>
@@ -43,7 +43,11 @@
                             @endif
                             <td>
                                 <div class="d-grid gap-2 d-md-block">
-                                    <a class="btn btn-success" href="{{route('prestamos.create-reserva', $reserva->id)}}" type="submit">Crear Prestamo</a>
+                                    @if ($reserva->estado == 'activo')
+                                        <a class="btn btn-success" href="{{route('prestamos.create-reserva', $reserva->id)}}" type="submit">Crear Prestamo</a>
+                                    @else
+                                        <button class="btn btn-success"disabled>Crear Prestamo</button>
+                                    @endif
                                     <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$reserva->id}}">Eliminar</button>
                                        
                                 </div>    

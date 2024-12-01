@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Copia_libro;
 use App\Models\Libro;
+use App\Models\Penalizacione;
+use App\Models\Persona;
+use App\Models\Prestamo;
 use App\Models\Reserva;
 use Illuminate\Http\Request;
 
@@ -45,8 +48,28 @@ class reservaController extends Controller
         ->where('estado', 'activo')
         ->exists();
 
+    $usuarioConPrestamo = Prestamo::where('id_persona', $request->id_persona)
+        ->where('estado', 'activo')
+        ->exists();
+    
+    $persona = Persona::with('prestamos.penalizacione')->findOrFail($request->id_persona);
+
+    $tienePenalizacionActiva = $persona->prestamos->contains(function ($prestamo) {
+        return $prestamo->penalizacione && $prestamo->penalizacione->estado === 'activo';
+    });
+    /*$usuarioConPenalizacion = Penalizacione::where('id_prestamo', $request->id_persona)
+        ->where('estado', 'activo')
+        ->exists();*/
+    
+
     if ($usuarioConReserva) {
         return redirect()->back()->with('error', 'Ya tienes una reserva activa. Solo puedes reservar un libro a la vez.');
+    }
+    if ($usuarioConPrestamo) {
+        return redirect()->back()->with('error', 'Ya tienes un prestamo activo. Solo puedes reservar un libro a la vez.');
+    }
+    if ($tienePenalizacionActiva) {
+        return redirect()->back()->with('error', 'Tienes una penalización pendiente. Por favor, resuélvela.');
     }
 
     // Verificar que la copia esté disponible

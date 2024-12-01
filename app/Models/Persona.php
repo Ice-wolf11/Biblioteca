@@ -24,11 +24,11 @@ class Persona extends Model
     }
     
     public function reservas(){
-        return $this->hasMany(Reserva::class);
+        return $this->hasMany(Reserva::class,'id_persona');
     }
 
     public function prestamos(){
-        return $this->hasMany(Prestamo::class);
+        return $this->hasMany(Prestamo::class,'id_persona');
     }
 }
 

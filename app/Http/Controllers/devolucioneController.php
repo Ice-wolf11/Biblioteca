@@ -61,7 +61,7 @@ class devolucioneController extends Controller
         // Cambiar el estado del préstamo a "devuelto"
         $prestamo->update(['estado' => 'devuelto']);
 
-        if ($request->filled('extraviado')=='si'){
+        if ($request->extraviado == 'si'){
             $prestamo->copia_libro->update(['estado'=> 'extraviado']); 
         }else{
             $prestamo->copia_libro->update(['estado'=> 'disponible']);

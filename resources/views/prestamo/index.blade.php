@@ -19,7 +19,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-striped" id="datatablesSimple" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Usuario</th>
@@ -42,7 +42,11 @@
                             @endif
                             <td>
                                 <div class="d-grid gap-2 d-md-block">
-                                    <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}">Devolucion</button>
+                                    @if ($prestamo->estado == 'activo')
+                                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}">Devolucion</button>
+                                    @else
+                                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}"disabled>Devolucion</button>
+                                    @endif    
                                     <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#detalleModal-{{$prestamo->id}}">Detalle</button>
                                     <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$prestamo->id}}">Eliminar</button>
                                        
@@ -103,7 +107,21 @@
                                                 <input type="text" name="titulo" id="titulo" class="form-control" value="{{ $prestamo->copia_libro->libro->titulo }}" disabled>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="fecha" class="form-label">Fecha Inicio:</label>
+                                                <label for="fecha" class="form-label">Fecha prestamo:</label>
+                                                <input type="date" name="fecha_prestamo" id="fecha_prestamo" class="form-control" value="{{$prestamo->fecha_inicio}}" readonly>
+                                                @error('fecha')
+                                                    <small class="text-danger">{{'*'.$message }}</small>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="fecha" class="form-label">Fecha estimada:</label>
+                                                <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" value="{{ $prestamo->fecha_limite}}" readonly>
+                                                @error('fecha')
+                                                    <small class="text-danger">{{'*'.$message }}</small>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="fecha" class="form-label">Fecha devolucion:</label>
                                                 <input type="date" name="fecha" id="fecha" class="form-control" value="{{ date('Y-m-d') }}" readonly>
                                                 @error('fecha')
                                                     <small class="text-danger">{{'*'.$message }}</small>
@@ -195,17 +213,40 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="fecha" class="form-label">Fecha Inicio:</label>
-                                                <input type="date" name="fecha" id="fecha" class="form-control" value="{{ date('Y-m-d') }}" readonly>
+                                                <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="{{ $prestamo->fecha_inicio}}" readonly>
+                                                @error('fecha')
+                                                    <small class="text-danger">{{'*'.$message }}</small>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="fecha" class="form-label">Fecha devolucion:</label>
+                                                @if($prestamo->devolucione)
+                                                    <input type="date" name="fecha" id="fecha" class="form-control" value="{{ $prestamo->devolucione->fecha}}" readonly>
+                                                @else
+                                                <p>El libro aun no fue devuelto</p> 
+                                                @endif
                                                 @error('fecha')
                                                     <small class="text-danger">{{'*'.$message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="mb-3">
                                                 <label for="detalle" class="form-label">Detalle devolucion:</label>
-                                                <textarea type="text" name="detalle" id="detalle" class="form-control" value="{{old('descripcion')}}"readonly>{{$prestamo->devolucione->detalle}}</textarea>
+                                                <textarea type="text" name="detalle" id="detalle" class="form-control" value="{{old('descripcion')}}"readonly>{{ $prestamo->devolucione?->detalle ?? 'No hay detalles de devolución' }}</textarea>
                                                 @error('detalle')
                                                     <small class="text-danger">{{'*'.$message }}</small>
                                                 @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="detalle" class="form-label">Detalle devolucion:</label>
+                                                @if($prestamo->devolucione)
+                                                    @if($prestamo->devolucione->estado == 'A tiempo')
+                                                        <p class="badge text-bg-success">{{ $prestamo->devolucione->estado }}</p>
+                                                    @elseif($prestamo->devolucione->estado == 'Atrasado')
+                                                        <p class="badge text-bg-danger">{{ $prestamo->devolucione->estado }}</p>
+                                                    @endif
+                                                @else
+                                                    <p>El libro aun no fue devuelto</p> 
+                                                @endif
                                             </div>
                                             <h4>Penalizacion</h4>             
                                             <div class="mb-3">
@@ -217,28 +258,30 @@
                                                         name="monto" 
                                                         id="monto" 
                                                         class="form-control" 
-                                                        placeholder="Ingrese el monto"
-                                                        min="0" 
-                                                        step="0.01"
-                                                        value="{{$prestamo->penalizacione->monto}}" 
+                                                        value="{{ $prestamo->penalizacione?->monto ?? 0 }}" 
                                                         readonly>
                                                 </div>
                                                 @error('monto')
                                                     <small class="text-danger">{{ '*' . $message }}</small>
                                                 @enderror
                                             </div>
-                                            <form action="{{route('penalizaciones.update', ['penalizacione'=>$prestamo->penalizacione])}}" method="POST">
-                                                @method('PATCH')
+                                            <form action="{{ $prestamo->penalizacione ? route('penalizaciones.update', ['penalizacione' => $prestamo->penalizacione]) : '#' }}" method="POST">
+                                                @if($prestamo->penalizacione)
+                                                    @method('PATCH')
+                                                @endif
                                                 @csrf  
                                             <div class="mb-3">
                                                 <!-- Campo select para "Estado Penalización" -->
                                                 <label for="estado_penalizacion" class="form-label">Estado Penalización</label>
+                                                @if($prestamo->penalizacione)
                                                 <select class="form-select" id="estado_penalizacion" name="estado_penalizacion">
                                                     <option value="activo" {{ old('estado_penalizacion', $prestamo->penalizacione->estado ?? '') == 'activo' ? 'selected' : '' }}>Activo</option>
                                                     <option value="pagado" {{ old('estado_penalizacion', $prestamo->penalizacione->estado ?? '') == 'pagado' ? 'selected' : '' }}>Pagado</option>
                                                     <option value="anulado" {{ old('estado_penalizacion', $prestamo->penalizacione->estado ?? '') == 'anulado' ? 'selected' : '' }}>Anulado</option>
                                                 </select>
-                                                
+                                                @else
+                                                <p>No hay penalizacion</p> 
+                                                @endif
                                             </div>                          
                                         </div>
 
@@ -269,5 +312,21 @@
 @endsection
 
 @push('js')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkbox = document.getElementById('customCode');
+        const codigoInput = document.getElementById('monto');
+        const selectExtraviado = document.getElementById('extraviado');
 
+        checkbox.addEventListener('change', function () {
+            if (checkbox.checked) {
+                codigoInput.removeAttribute('readonly');
+                selectExtraviado.disabled = false; // Habilitar el select si está marcado
+            } else {
+                codigoInput.setAttribute('readonly', true);
+                selectExtraviado.disabled = true; // Deshabilitar el select si no está marcado
+            }
+        });
+    });
+</script>
 @endpush

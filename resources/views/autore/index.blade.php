@@ -3,6 +3,7 @@
 @push('css')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 
+
 @endpush
 
 @section('content')
@@ -27,7 +28,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-striped" id="datatablesSimple" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Nombre</th>
@@ -82,5 +83,5 @@
 
 @push('js')
 
-
+<script src="{{asset('js/datatables-simple-demo.js')}}"></script>
 @endpush
