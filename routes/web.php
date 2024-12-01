@@ -14,9 +14,11 @@ use App\Http\Controllers\penalizacioneController;
 use App\Http\Controllers\personaController;
 use App\Http\Controllers\prestamoController;
 use App\Http\Controllers\reservaController;
+use App\Http\Controllers\roleController;
 use Illuminate\Support\Facades\Route;
 
-
+//roles
+Route::resource('roles',roleController::class);
 
 //rutas devoluciones
 Route::resource('devoluciones', devolucioneController::class);

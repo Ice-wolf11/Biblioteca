@@ -1,5 +1,5 @@
 @extends('template')
-@section('title', 'Usuarios')
+@section('title', 'Roles')
 @push('css')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 
@@ -7,13 +7,13 @@
 
 @section('content')
 @include('layouts.partials.alert')
-    <h1 class="mt-4 text-center">Usuarios</h1>
+    <h1 class="mt-4 text-center">Roles</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="{{route('panel')}}">Inicio</a></li>
-        <li class="breadcrumb-item" active>Usuarios</li>
+        <li class="breadcrumb-item" active>Roles</li>
     </ol>
     <div class="mb-4">
-        <a href="{{route('personas.create')}}" class="btn btn-primary btn-icon-split">
+        <a href="{{route('roles.create')}}" class="btn btn-primary btn-icon-split">
             <span class="icon text-white-50">
                 <i class="fas fa-solid fa-plus"></i>
             </span>
@@ -23,38 +23,34 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Lista Usuarios</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Lista Roles</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped" id="datatablesSimple" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Area</th>
                             <th>Rol</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($personas as $persona)
+                        @foreach ($roles as $role)
                         <tr>
-                            <td>{{$persona->user->name}}</td>
-                            <td>{{$persona->area->descripcion}}</td>
-                            <td>{{$persona->user->getRoleNames()->first()}}</td>
+                            <td>{{$role->name}}</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-block">
                                     
-                                    <form action="{{route('personas.edit',['persona'=>$persona])}}" class="d-inline">@csrf<button class="btn btn-success" type="submit">Editar</button></form>
+                                    <form action="{{route('roles.edit',['role'=>$role])}}" class="d-inline">@csrf<button class="btn btn-success" type="submit">Editar</button></form>
                                     
-                                    <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$persona->id}}">Eliminar</button>
+                                    <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$role->id}}">Eliminar</button>
                                        
                                 </div>    
                             </td>               
                         </tr>
 
                         <!-- Modal -->
-                        <div class="modal fade" id="confirmModal-{{$persona->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="confirmModal-{{$role->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -66,7 +62,7 @@
                                 </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <form action="{{route('personas.destroy',['persona'=>$persona->id])}}" method="POST">
+                                <form action="{{route('roles.destroy',['role'=>$role->id])}}" method="POST">
                                     @method('DELETE')
                                     @csrf
                                     <button type="submit" class="btn btn-danger">Confirmar</button>

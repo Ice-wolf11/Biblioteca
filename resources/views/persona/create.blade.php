@@ -90,7 +90,9 @@
                     <label for="rol" class="form-label">Rol:</label>
                     <select id="role" name="role" class="form-select" aria-label="Default select example">
                         <option selected disabled>Seleccione...</option>
-                        
+                        @foreach ($roles as $item)
+                            <option value="{{$item->name}}" @selected(old('role')==$item->name)>{{$item->name}}</option>
+                            @endforeach
                         
                     </select>
                     @error('rol')

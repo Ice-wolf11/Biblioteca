@@ -93,7 +93,13 @@
                     <label for="rol" class="form-label">Rol:</label>
                     <select id="role" name="role" class="form-select" aria-label="Default select example">
                         <option selected disabled>Seleccione...</option>
-                        
+                        @foreach ($roles as $item)
+                                @if ( in_array($item->name,$trabajador->user->roles->pluck('name')->toArray()) )
+                                    <option selected value="{{$item->name}}" @selected(old('role')==$item->name)>{{$item->name}}</option>
+                                @else
+                                    <option value="{{$item->name}}" @selected(old('role')==$item->name)>{{$item->name}}</option>
+                                @endif
+                            @endforeach
                         
                     </select>
                     @error('rol')

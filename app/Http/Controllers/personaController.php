@@ -10,6 +10,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+
 class personaController extends Controller
 {
     /**
@@ -46,9 +48,9 @@ class personaController extends Controller
      */
     public function create()
     {
-        //$roles = Role::all();
+        $roles = Role::all();
         $areas = Area::all();
-        return view('persona.create', compact('areas'));
+        return view('persona.create', compact('areas','roles'));
     }
 
     /**
@@ -84,7 +86,7 @@ class personaController extends Controller
                 'id_user' => $user->id,
 
             ]);
-            //$user->assignRole($request->role);  ->ahorita te hago funcionar
+            $user->assignRole($request->role); // ->ahorita te hago funcionar
 
             /*$trabajador = Trabajadore::create([
                 'nombre' => $request->validated()['nombre'],
@@ -136,7 +138,7 @@ class personaController extends Controller
             $user->password = Hash::make($request->validated()['password']);
         }
         $user->save();
-        //$user->syncRoles([$request->role]);
+        $user->syncRoles([$request->role]);
 
         $persona->nombres = $request->validated()['nombre'];
         $persona->apellidos = $request->validated()['apellido'];
@@ -163,8 +165,8 @@ class personaController extends Controller
         $persona->delete(); // Eliminar el trabajador
 
         //Eliminar rol
-        //$rolUser = $user->getRoleNames()->first();
-        //$user->removeRole($rolUser);
+        $rolUser = $user->getRoleNames()->first();
+        $user->removeRole($rolUser);
 
         return redirect()->route('personas.index')->with('success', 'Usuario eliminado correctamente');
     }

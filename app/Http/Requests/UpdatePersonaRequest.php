@@ -30,7 +30,7 @@ class UpdatePersonaRequest extends FormRequest
             'email' => 'required|email|max:255|unique:users,email,' . $this->route('persona')->id_user,
             'password' => 'nullable|string|min:8|confirmed',
             'area' => 'required|exists:areas,id',
-            //'role' => 'required|exists:roles,name' -> ahorita te arreglo
+            'role' => 'required|exists:roles,name'// -> ahorita te arreglo
         ];
     }
 }

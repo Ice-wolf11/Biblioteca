@@ -146,7 +146,7 @@
     </li>
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{{route('roles.index')}}">
             <i class="fas fa-solid fa-ghost"></i>
             <span>Roles y permisos</span></a>
     </li>
