@@ -24,7 +24,7 @@ class permissionSeeder extends Seeder
             'ver-autor',
             'crear-autor',
             'editar-autor',
-            'aliminar-autor',
+            'eliminar-autor',
 
             //catalogo
             'ver-catalogo',
