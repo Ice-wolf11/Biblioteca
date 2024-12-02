@@ -59,20 +59,20 @@
             <span>Catalogo</span></a>
     </li>
     @endcan
-    @can('ver-reserva')
+    @if (auth()->user()->hasAnyPermission(['ver-reserva', 'ver-mis-reservas']))
     <li class="nav-item">
         <a class="nav-link" href="{{route('reservas.index')}}">
             <i class="fas fa-solid fa-folder-open"></i>
             <span>Reservas</span></a>
     </li>
-    @endcan
-    @can('ver-prestamo')
+    @endif
+    @if (auth()->user()->hasAnyPermission(['ver-prestamo', 'ver-mis-prestamos']))
     <li class="nav-item">
         <a class="nav-link" href="{{route('prestamos.index')}}">
             <i class="fas fa-solid fa-bookmark"></i>
             <span>Prestamos</span></a>
     </li>
-    @endcan
+    @endif
 
 
     <!--usuarios-->

@@ -31,32 +31,88 @@
                     </thead>
                     <tbody>
                         @foreach ($prestamos as $prestamo)
-                        <tr>
-                            <td>{{$prestamo->persona->user->name}}</td>
-                            <td>{{$prestamo->copia_libro->libro->titulo}}</td>
-                            <td>{{$prestamo->copia_libro->codigo}}</td>
-                            @if ($prestamo->estado == 'activo')
-                                    <td><p class="badge text-bg-success">{{ $prestamo->estado }}</p></td>
-                            @elseif ($prestamo->estado == 'devuelto')
-                                    <td><p class="badge text-bg-primary">{{ $prestamo->estado }}</p></td>
-                            @endif
-                            <td>
-                                <div class="d-grid gap-2 d-md-block">
-                                    @if ($prestamo->estado == 'activo')
-                                        @can('crear-devolucion')
-                                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}">Devolucion</button>
+                        @if (auth()->user()->hasAllPermissions(['ver-prestamo', 'ver-mis-prestamos']))
+                            <!-- Mostrar esta sección si tiene todos los permisos -->
+                            <tr>
+                                <td>{{$prestamo->persona->user->name}}</td>
+                                <td>{{$prestamo->copia_libro->libro->titulo}}</td>
+                                <td>{{$prestamo->copia_libro->codigo}}</td>
+                                @if ($prestamo->estado == 'activo')
+                                        <td><p class="badge text-bg-success">{{ $prestamo->estado }}</p></td>
+                                @elseif ($prestamo->estado == 'devuelto')
+                                        <td><p class="badge text-bg-primary">{{ $prestamo->estado }}</p></td>
+                                @endif
+                                <td>
+                                    <div class="d-grid gap-2 d-md-block">
+                                        @if ($prestamo->estado == 'activo')
+                                            @can('crear-devolucion')
+                                            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}">Devolucion</button>
+                                            @endcan
+                                        @else
+                                            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}"disabled>Devolucion</button>
+                                        @endif    
+                                        <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#detalleModal-{{$prestamo->id}}">Detalle</button>
+                                        @can('eliminar-prestamo')
+                                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$prestamo->id}}">Eliminar</button>
                                         @endcan
-                                    @else
-                                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}"disabled>Devolucion</button>
-                                    @endif    
-                                    <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#detalleModal-{{$prestamo->id}}">Detalle</button>
-                                    @can('eliminar-prestamo')
-                                    <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$prestamo->id}}">Eliminar</button>
-                                    @endcan
-                                </div>    
-                            </td>                 
-                        </tr>
-
+                                    </div>    
+                                </td>                 
+                            </tr>
+                        @elseif(auth()->user()->hasAllPermissions(['ver-prestamo']))
+                            <tr>
+                                <td>{{$prestamo->persona->user->name}}</td>
+                                <td>{{$prestamo->copia_libro->libro->titulo}}</td>
+                                <td>{{$prestamo->copia_libro->codigo}}</td>
+                                @if ($prestamo->estado == 'activo')
+                                        <td><p class="badge text-bg-success">{{ $prestamo->estado }}</p></td>
+                                @elseif ($prestamo->estado == 'devuelto')
+                                        <td><p class="badge text-bg-primary">{{ $prestamo->estado }}</p></td>
+                                @endif
+                                <td>
+                                    <div class="d-grid gap-2 d-md-block">
+                                        @if ($prestamo->estado == 'activo')
+                                            @can('crear-devolucion')
+                                            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}">Devolucion</button>
+                                            @endcan
+                                        @else
+                                            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{$prestamo->id}}"disabled>Devolucion</button>
+                                        @endif    
+                                        <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#detalleModal-{{$prestamo->id}}">Detalle</button>
+                                        @can('eliminar-prestamo')
+                                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$prestamo->id}}">Eliminar</button>
+                                        @endcan
+                                    </div>    
+                                </td>                 
+                            </tr>
+                        @elseif(auth()->user()->hasAllPermissions(['ver-mis-prestamos']))
+                            @if ($prestamo->persona->id_user == auth()->user()->id)
+                            <tr>
+                                <td>{{ $prestamo->persona->user->name }}</td>
+                                <td>{{ $prestamo->copia_libro->libro->titulo }}</td>
+                                <td>{{ $prestamo->copia_libro->codigo }}</td>
+                                @if ($prestamo->estado == 'activo')
+                                    <td><p class="badge text-bg-success">{{ $prestamo->estado }}</p></td>
+                                @elseif ($prestamo->estado == 'devuelto')
+                                    <td><p class="badge text-bg-primary">{{ $prestamo->estado }}</p></td>
+                                @endif
+                                <td>
+                                    <div class="d-grid gap-2 d-md-block">
+                                        @if ($prestamo->estado == 'activo')
+                                            @can('crear-devolucion')
+                                            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{ $prestamo->id }}">Devolución</button>
+                                            @endcan
+                                        @else
+                                            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createModal-{{ $prestamo->id }}" disabled>Devolución</button>
+                                        @endif
+                                        <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#detalleModal-{{ $prestamo->id }}">Detalle</button>
+                                        @can('eliminar-prestamo')
+                                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $prestamo->id }}">Eliminar</button>
+                                        @endcan
+                                    </div>
+                                </td>
+                            </tr>
+                            @endif
+                        @endif
                         <!-- Modal delete -->
                         <div class="modal fade" id="confirmModal-{{$prestamo->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
