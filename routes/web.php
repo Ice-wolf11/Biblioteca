@@ -15,6 +15,7 @@ use App\Http\Controllers\personaController;
 use App\Http\Controllers\prestamoController;
 use App\Http\Controllers\reservaController;
 use App\Http\Controllers\roleController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 //roles
@@ -76,6 +77,10 @@ Route::get('/', function () {
 })->name('index');
 Route::get('/panel',[homeController::class,'index'])->name('panel');
 
+
+Route::get('storage',function(){
+    Artisan::call('storage:link');
+});
 
 
 Route::get('/register', function () {
