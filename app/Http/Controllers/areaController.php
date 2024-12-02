@@ -7,12 +7,26 @@ use App\Http\Requests\StoreAreaRequest;
 use App\Http\Requests\UpdateAreaRequest;
 use App\Models\Area;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
+
 
 class areaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {   
+        $this->middleware('can:ver-area')->only('index');
+        $this->middleware('can:crear-area')->only('create', 'store');
+        $this->middleware('can:editar-area')->only('edit', 'update');
+        $this->middleware('can:eliminar-area')->only('destroy');   
+    }
+
+
+
     public function index()
     {
         $areas = Area::all();

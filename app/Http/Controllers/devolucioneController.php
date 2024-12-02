@@ -7,9 +7,16 @@ use App\Models\Devolucione;
 use App\Models\Penalizacione;
 use App\Models\Prestamo;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 
 class devolucioneController extends Controller
 {
+    public function __construct()
+    {   
+        $this->middleware('can:crear-devolucion')->only('store');
+    }
     /**
      * Display a listing of the resource.
      */

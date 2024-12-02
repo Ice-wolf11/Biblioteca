@@ -9,12 +9,20 @@ use App\Models\Persona;
 use App\Models\Prestamo;
 use App\Models\Reserva;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 
 class reservaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {   
+        $this->middleware('permission:ver-reserva|ver-mis-reservas')->only('index');
+        $this->middleware('can:crear-reserva')->only('create', 'store');
+        $this->middleware('can:eliminar-reserva')->only('destroy');
+        
+    }
+    
     public function index()
     {
         $reservas = Reserva::with('persona','copia_libro')->latest()->get();

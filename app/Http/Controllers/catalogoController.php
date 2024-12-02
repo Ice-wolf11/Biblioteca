@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Categoria;
 use App\Models\Libro;
 use Illuminate\Http\Request;
-
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 class catalogoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {   
+        $this->middleware('can:ver-catalogo')->only('index');
+         
+    }
 
     //filto de categorias
     public function filter(Request $request)

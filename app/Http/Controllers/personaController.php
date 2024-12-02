@@ -11,13 +11,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 
 class personaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
+    public function __construct()
+    {   
+        $this->middleware('can:ver-usuario')->only('index');
+        $this->middleware('can:crear-usuario')->only('create', 'store');
+        $this->middleware('can:editar-usuario')->only('edit', 'update');
+        $this->middleware('can:eliminar-usuario')->only('destroy');   
+    }
      public function search(Request $request)
      {
          $nombre = $request->input('nombre');

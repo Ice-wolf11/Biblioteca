@@ -8,12 +8,23 @@ use App\Models\Autore;
 use Illuminate\Container\Attributes\DB as AttributesDB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 
 class autoreController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {   
+        $this->middleware('can:ver-autor')->only('index');
+        $this->middleware('can:crear-autor')->only('create', 'store');
+        $this->middleware('can:editar-autor')->only('edit', 'update');
+        $this->middleware('can:eliminar-autor')->only('destroy');   
+    }
+
     public function index()
     {
         $autore = Autore::all();

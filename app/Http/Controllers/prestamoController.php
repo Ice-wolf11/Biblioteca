@@ -11,12 +11,19 @@ use App\Models\Libro;
 use App\Models\Reserva;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 
 class prestamoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {   
+        $this->middleware('permission:ver-prestamo|ver-mis-prestamos')->only('index');
+        $this->middleware('can:crear-prestamo')->only('create_catalogo', 'store_catalogo','create_reserva', 'store_reserva');
+        $this->middleware('can:eliminar-prestamo')->only('destroy');
+        
+    }
 
     public function index()
     {

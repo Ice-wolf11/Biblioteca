@@ -12,9 +12,19 @@ use App\Models\Copia_libro;
 use App\Models\Libro;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 
 class libroController extends Controller
 {
+    public function __construct()
+    {   
+        $this->middleware('can:ver-libro')->only('index');
+        $this->middleware('can:crear-libro')->only('create', 'store');
+        $this->middleware('can:editar-libro')->only('edit', 'update');
+        $this->middleware('can:eliminar-libro')->only('destroy');   
+    }
     /**
      * Display a listing of the resource.
      */

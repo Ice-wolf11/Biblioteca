@@ -6,11 +6,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Routing\Controller;
 class roleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {   
+        $this->middleware('can:ver-roles')->only('index');
+        $this->middleware('can:crear-roles')->only('create', 'store');
+        $this->middleware('can:editar-roles')->only('edit', 'update');
+        $this->middleware('can:eliminar-roles')->only('destroy');   
+    }
     public function index()
     {
         $roles = Role::all();

@@ -4,12 +4,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Copia_libro;
 use App\Models\Libro;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 
 class copia_libroController extends Controller
 {
     /**
      * Show the form for creating a new resource.
      */
+    public function __construct()
+    {   
+        $this->middleware('can:crear-copia')->only('store');
+        $this->middleware('can:eliminar-copia')->only('destroy');
+        
+    }
+
     public function create(Libro $libro)
     {
         // No se requiere implementación ya que el formulario se maneja en la vista principal con un modal

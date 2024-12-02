@@ -9,12 +9,19 @@ use App\Models\Categoria;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 
 class categoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {   
+        $this->middleware('can:ver-categoria')->only('index');
+        $this->middleware('can:crear-categoria')->only('create', 'store');
+        $this->middleware('can:editar-categoria')->only('edit', 'update');
+        $this->middleware('can:eliminar-categoria')->only('destroy');   
+    }
     public function index()
     {
         $categoria = Categoria::all();

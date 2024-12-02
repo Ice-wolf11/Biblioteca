@@ -6,9 +6,16 @@ use App\Http\Requests\UpdatePenalizacioneRequest;
 use App\Models\Penalizacione;
 use App\Models\Prestamo;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 
 class penalizacioneController extends Controller
 {
+    public function __construct()
+    {   
+        $this->middleware('can:editar-penalizacion')->only('update');
+    }
     /**
      * Display a listing of the resource.
      */
