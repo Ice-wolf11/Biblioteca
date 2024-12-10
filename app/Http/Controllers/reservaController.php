@@ -23,10 +23,25 @@ class reservaController extends Controller
         
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $reservas = Reserva::with('persona','copia_libro')->latest()->get();
-        return view('reserva.index',['reservas'=>$reservas]);
+        $user = $request->user(); // Usamos el objeto Request para obtener el usuario
+        $reservas = collect();
+        if ($user->hasAllPermissions(['ver-reserva', 'ver-mis-reservas'])) {
+            // El usuario puede ver todos los préstamos
+            $reservas = Reserva::with(['persona.user', 'copia_libro.libro'])->get();
+        } elseif ($user->hasPermissionTo('ver-reserva')) {
+            // El usuario puede ver todos los préstamos pero no "mis préstamos"
+            $reservas = Reserva::with(['persona.user', 'copia_libro.libro'])->get();
+        } elseif ($user->hasPermissionTo('ver-mis-reservas')) {
+            // El usuario solo puede ver sus préstamos
+            $reservas = Reserva::with(['persona.user', 'copia_libro.libro'])
+                ->whereHas('persona', function ($query) use ($user) {
+                    $query->where('id_user', $user->id);
+                })->get();
+        }
+    
+        return view('reserva.index', compact('reservas'));
     }
 
     /**

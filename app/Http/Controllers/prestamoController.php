@@ -25,10 +25,26 @@ class prestamoController extends Controller
         
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $prestamos = Prestamo::with('persona','copia_libro')->latest()->get();
-        return view('prestamo.index',['prestamos'=>$prestamos]);
+        $user = $request->user(); // Usamos el objeto Request para obtener el usuario
+        $prestamos = collect();
+        // Filtrar según los permisos
+    if ($user->hasAllPermissions(['ver-prestamo', 'ver-mis-prestamos'])) {
+        // El usuario puede ver todos los préstamos
+        $prestamos = Prestamo::with(['persona.user', 'copia_libro.libro'])->get();
+    } elseif ($user->hasPermissionTo('ver-prestamo')) {
+        // El usuario puede ver todos los préstamos pero no "mis préstamos"
+        $prestamos = Prestamo::with(['persona.user', 'copia_libro.libro'])->get();
+    } elseif ($user->hasPermissionTo('ver-mis-prestamos')) {
+        // El usuario solo puede ver sus préstamos
+        $prestamos = Prestamo::with(['persona.user', 'copia_libro.libro'])
+            ->whereHas('persona', function ($query) use ($user) {
+                $query->where('id_user', $user->id);
+            })->get();
+    }
+
+    return view('prestamo.index', compact('prestamos'));
     }
 
     /**
@@ -209,9 +225,12 @@ class prestamoController extends Controller
     {
         $prestamo = Prestamo::find($id);
         
+        if ($prestamo->copia_libro->estado != 'extraviado'){
             // Cambiar el estado de la copia a 'disponible'
             $prestamo->copia_libro->estado = 'disponible';
             $prestamo->copia_libro->save();
+        };
+            
         
 
         $prestamo->delete();

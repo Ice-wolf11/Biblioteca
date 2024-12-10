@@ -32,7 +32,6 @@
                     </thead>
                     <tbody>
                         @foreach ($reservas as $reserva)
-                        @if (auth()->user()->hasAllPermissions(['ver-reserva', 'ver-mis-reservas']))
                             <tr>
                                 <td>{{$reserva->persona->user->name}}</td>
                                 <td>{{$reserva->copia_libro->libro->titulo}}</td>
@@ -57,60 +56,6 @@
                                     </div>    
                                 </td>                 
                             </tr>
-                        @elseif(auth()->user()->hasAllPermissions(['ver-prestamo']))
-                            <tr>
-                                <td>{{$reserva->persona->user->name}}</td>
-                                <td>{{$reserva->copia_libro->libro->titulo}}</td>
-                                <td>{{$reserva->copia_libro->codigo}}</td>
-                                @if ($reserva->estado == 'activo')
-                                        <td><p class="badge text-bg-success">{{ $reserva->estado }}</p></td>
-                                @elseif ($reserva->estado == 'inactivo')
-                                        <td><p class="badge text-bg-danger">{{ $reserva->estado }}</p></td>
-                                @endif
-                                <td>
-                                    <div class="d-grid gap-2 d-md-block">
-                                        @can('crear-prestamo')
-                                        @if ($reserva->estado == 'activo')
-                                            <a class="btn btn-success" href="{{route('prestamos.create-reserva', $reserva->id)}}" type="submit">Crear Prestamo</a>
-                                        @else
-                                            <button class="btn btn-success"disabled>Crear Prestamo</button>
-                                        @endif
-                                        @endcan
-                                        @can('eliminar-reserva')
-                                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$reserva->id}}">Eliminar</button>
-                                        @endcan
-                                    </div>    
-                                </td>                 
-                            </tr>
-                        @elseif(auth()->user()->hasAllPermissions(['ver-mis-prestamos']))
-                            @if ($reserva->persona->id_user == auth()->user()->id)
-                                <tr>
-                                    <td>{{$reserva->persona->user->name}}</td>
-                                    <td>{{$reserva->copia_libro->libro->titulo}}</td>
-                                    <td>{{$reserva->copia_libro->codigo}}</td>
-                                    @if ($reserva->estado == 'activo')
-                                            <td><p class="badge text-bg-success">{{ $reserva->estado }}</p></td>
-                                    @elseif ($reserva->estado == 'inactivo')
-                                            <td><p class="badge text-bg-danger">{{ $reserva->estado }}</p></td>
-                                    @endif
-                                    <td>
-                                        <div class="d-grid gap-2 d-md-block">
-                                            @can('crear-prestamo')
-                                            @if ($reserva->estado == 'activo')
-                                                <a class="btn btn-success" href="{{route('prestamos.create-reserva', $reserva->id)}}" type="submit">Crear Prestamo</a>
-                                            @else
-                                                <button class="btn btn-success"disabled>Crear Prestamo</button>
-                                            @endif
-                                            @endcan
-                                            @can('eliminar-reserva')
-                                            <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$reserva->id}}">Eliminar</button>
-                                            @endcan
-                                        </div>    
-                                    </td>                 
-                                </tr>
-                            @endif
-                        @endif
-                        
 
                         <!-- Modal -->
                         <div class="modal fade" id="confirmModal-{{$reserva->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
