@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('penalizaciones', function (Blueprint $table) {
             $table->id();
             #$table->date('fecha_inicio');
-            $table->decimal('monto', 3,2)->unsigned();
+            $table->decimal('monto', 10,2)->unsigned();
             $table->enum('estado', ['activo', 'pagado','anulado'])->default('activo');
             $table->foreignId('id_prestamo')->constrained('prestamos')->onDelete('cascade');
             $table->timestamps();
