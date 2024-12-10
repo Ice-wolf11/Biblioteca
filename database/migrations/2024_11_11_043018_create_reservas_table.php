@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('reservas', function (Blueprint $table) {
             $table->id();
             $table->enum('estado', ['activo', 'inactivo'])->default('activo');
-            $table->foreignId('id_persona')->nullable()->constrained('personas')->onDelete('set null');
-            $table->foreignId('id_copia')->nullable()->constrained('copia_libros')->onDelete('set null');
+            $table->foreignId('id_persona')->nullable()->constrained('personas')->onDelete('cascade');
+            $table->foreignId('id_copia')->nullable()->constrained('copia_libros')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -121,10 +121,10 @@ class personaController extends Controller
      */
     public function edit(Persona $persona)
     {
-        //$roles = Role::all();
+        $roles = Role::all();
         $areas = Area::all(); // Obtener todas las áreas
         //dd($trabajadore);
-        return view('persona.edit', ['persona' => $persona, 'areas' => $areas, /*'roles' => $roles*/]);
+        return view('persona.edit', ['persona' => $persona, 'areas' => $areas, 'roles' => $roles]);
     }
 
     /**
